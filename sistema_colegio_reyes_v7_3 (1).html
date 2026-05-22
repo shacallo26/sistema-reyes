@@ -1,0 +1,1978 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema Financiero v7 — U.E. Ntra. Sra. de los Reyes</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f5f5f7;color:#1d1d1f}
+:root{--bg:#fff;--bg2:#f5f5f7;--bg3:#e8e8ed;--text:#1d1d1f;--text2:#6e6e73;--text3:#aeaeb2;--border:#d2d2d7;--border2:#c7c7cc;--purple:#534AB7;--pl:#EEEDFE;--pd:#3C3489;--green:#1D9E75;--gl:#E1F5EE;--gd:#0F6E56;--red:#E24B4A;--rl:#FCEBEB;--rd:#A32D2D;--amber:#BA7517;--al:#FAEEDA;--ad:#854F0B;--blue:#185FA5;--bl:#E6F1FB;--bd:#0C447C;--r:8px;--rl2:12px}
+.screen{display:none}.screen.active{display:flex;flex-direction:column;min-height:100vh}
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg2)}
+.login-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--rl2);padding:36px;width:390px;box-shadow:0 4px 24px rgba(0,0,0,.08)}
+.login-logo{text-align:center;margin-bottom:28px}
+.login-logo h1{font-size:20px;font-weight:700;margin-top:10px}
+.login-logo p{font-size:13px;color:var(--text2);margin-top:4px}
+.ver{font-size:11px;color:var(--text3);margin-top:6px;background:var(--bg2);padding:3px 10px;border-radius:20px;display:inline-block}
+.role-btn{width:100%;padding:16px;border:1.5px solid var(--border2);border-radius:var(--r);background:var(--bg);cursor:pointer;margin-bottom:12px;display:flex;align-items:center;gap:14px;text-align:left}
+.role-btn:hover{background:var(--bg2)}.role-btn.dir{border-color:var(--purple)}.role-btn.sec{border-color:var(--green)}
+.rb-icon{width:44px;height:44px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
+.rb-info h3{font-size:15px;font-weight:600;margin-bottom:3px}.rb-info p{font-size:13px;color:var(--text2)}
+.app{display:flex;flex:1;min-height:100vh}
+.sidebar{width:224px;min-width:224px;background:var(--bg);border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sb-header{padding:16px;border-bottom:1px solid var(--border)}
+.sb-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600;margin-bottom:6px}
+.chip-dir{background:var(--pl);color:var(--pd)}.chip-sec{background:var(--gl);color:var(--gd)}
+.sb-name{font-size:14px;font-weight:600}.sb-sub{font-size:12px;color:var(--text2)}
+.saldo-bar{margin:10px 12px;background:var(--bl);border-radius:var(--r);padding:10px 12px}
+.saldo-title{font-size:11px;color:var(--bd);margin-bottom:7px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.saldo-row{display:flex;justify-content:space-between;font-size:12px;padding:2px 0}
+.saldo-row span:first-child{color:var(--blue)}.saldo-row span:last-child{font-weight:600;color:var(--bd)}
+.saldo-total{display:flex;justify-content:space-between;font-size:13px;font-weight:700;padding-top:6px;margin-top:6px;border-top:1px solid rgba(24,95,165,.2)}
+.saldo-total span:last-child{color:var(--bd)}.ul-reg{font-size:11px;color:var(--blue);margin-top:4px}
+.nav-group{padding:6px 0;border-bottom:1px solid var(--border)}
+.nav-label{font-size:11px;color:var(--text3);padding:0 16px 4px;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+.nitem{display:flex;align-items:center;gap:9px;padding:9px 16px;font-size:13px;color:var(--text2);cursor:pointer;border-right:2px solid transparent}
+.nitem:hover{background:var(--bg2);color:var(--text)}.nitem.active{background:var(--bg2);color:var(--text);font-weight:600}
+.nitem.active.nd{border-right-color:var(--purple);color:var(--pd)}.nitem.active.ns{border-right-color:var(--green);color:var(--gd)}
+.sb-bcv{margin:8px 12px;background:var(--bl);border-radius:var(--r);padding:8px 12px}
+.sb-bcv label{font-size:11px;color:var(--blue);font-weight:600;display:block;margin-bottom:4px}
+.sb-bcv-row{display:flex;align-items:center;gap:6px}
+.sb-bcv-row span{font-size:11px;color:var(--bd)}
+.sb-bcv input{font-size:14px;font-weight:700;color:var(--bd);border:1px solid rgba(24,95,165,.3);border-radius:6px;padding:4px 8px;background:rgba(255,255,255,.7);width:100%;font-family:inherit}
+.sb-logout{margin-top:auto;padding:12px 16px;border-top:1px solid var(--border)}
+.sb-logout button{font-size:13px;color:var(--text2);background:none;border:none;cursor:pointer;font-family:inherit}
+.main{flex:1;overflow-y:auto;padding:20px 24px;background:var(--bg2)}
+.page{display:none}.page.active{display:block}
+.page-title{font-size:20px;font-weight:700;margin-bottom:4px}
+.page-sub{font-size:13px;color:var(--text2);margin-bottom:18px}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:16px}
+.metric{background:var(--bg);border-radius:var(--r);padding:12px 14px;border:1px solid var(--border)}
+.metric label{font-size:12px;color:var(--text2);display:block;margin-bottom:4px;font-weight:500}
+.metric-val{font-size:18px;font-weight:700}.metric-sub{font-size:11px;color:var(--text2);margin-top:2px}
+.card{background:var(--bg);border:1px solid var(--border);border-radius:var(--rl2);padding:16px;margin-bottom:14px}
+.card-title{font-size:14px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.two-col{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+.three-col{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);gap:14px}
+table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
+th{text-align:left;padding:8px 10px;color:var(--text2);font-weight:600;border-bottom:1px solid var(--border);font-size:12px}
+td{padding:8px 10px;border-bottom:1px solid var(--border);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+tr:last-child td{border-bottom:none}tr:hover td{background:var(--bg2)}
+.badge{display:inline-block;font-size:11px;padding:3px 8px;border-radius:20px;font-weight:600;white-space:nowrap}
+.bg{background:#EAF3DE;color:#3B6D11}.br{background:#FCEBEB;color:#A32D2D}.ba{background:#FAEEDA;color:#854F0B}
+.bb{background:#E6F1FB;color:#185FA5}.bp{background:#EEEDFE;color:#3C3489}.bgr{background:#F1EFE8;color:#5F5E5A}
+.btn{background:var(--bg);border:1px solid var(--border2);border-radius:var(--r);padding:7px 14px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-family:inherit}
+.btn:hover{background:var(--bg2)}.btn-p{background:var(--purple);color:#fff;border-color:var(--purple)}.btn-p:hover{background:var(--pd)}
+.btn-g{background:var(--green);color:#fff;border-color:var(--green)}.btn-g:hover{background:var(--gd)}
+.btn-r{background:var(--red);color:#fff;border-color:var(--red)}.btn-r:hover{background:var(--rd)}
+.btn-sm{padding:4px 10px;font-size:12px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.form-group{display:flex;flex-direction:column;gap:4px}
+.form-group label{font-size:12px;color:var(--text2);font-weight:500}
+.form-group input,.form-group select,.form-group textarea{font-size:14px;padding:8px 10px;border:1px solid var(--border2);border-radius:var(--r);background:var(--bg);color:var(--text);font-family:inherit}
+.sem{width:10px;height:10px;border-radius:50%;display:inline-block;flex-shrink:0}
+.sv{background:#639922}.sa{background:#BA7517}.sr{background:#E24B4A}
+.mes-nav{display:flex;align-items:center;gap:12px;margin-bottom:16px;background:var(--bg);padding:10px 14px;border-radius:var(--r);border:1px solid var(--border)}
+.mes-nav button{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:5px 14px;cursor:pointer;font-size:16px;font-family:inherit}
+.mes-nav-lbl{font-size:15px;font-weight:700;flex:1;text-align:center}
+.incon{background:var(--rl);border:1px solid #F09595;border-radius:var(--r);padding:12px 14px;margin-bottom:8px;cursor:pointer;display:flex;align-items:flex-start;gap:12px}
+.incon:hover{background:#F7C1C1}.incon-tipo{font-size:11px;font-weight:700;color:var(--rd);margin-bottom:3px;text-transform:uppercase}
+.incon-desc{font-size:13px;color:#791F1F}.incon-monto{font-size:14px;font-weight:700;color:var(--rd);white-space:nowrap;margin-left:auto}
+.mov-inc td{background:#FAEEDA!important}
+.tabs{display:flex;gap:2px;margin-bottom:14px;background:var(--bg3);padding:3px;border-radius:var(--r)}
+.tab{flex:1;padding:7px 10px;font-size:13px;border:none;background:transparent;color:var(--text2);cursor:pointer;border-radius:6px;font-family:inherit;font-weight:500}
+.tab.active{background:var(--bg);font-weight:700;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.subtab{display:none}.subtab.active{display:block}
+.fi{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--border)}
+.fi:last-child{border-bottom:none}.fi-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.fv{background:#639922}.fr{background:#E24B4A}.fn{background:#BA7517}.fg{background:#B4B2A9}
+.fi-info{flex:1}.fi-nom{font-size:13px;font-weight:600}.fi-fec{font-size:12px;color:var(--text2);margin-top:2px}
+.fi-dias{font-size:12px;font-weight:600}.fd-urg{color:var(--rd)}.fd-pr{color:var(--ad)}.fd-ok{color:#3B6D11}
+.meses-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:8px;margin:10px 0}
+.mc{border-radius:var(--r);padding:9px 8px;border:1.5px solid transparent;text-align:center;user-select:none}
+.mc.pag{background:#EAF3DE;border-color:#97C459;cursor:default}.mc.pag .ml{color:#3B6D11;font-weight:600}
+.mc.deu{background:var(--rl);border-color:#F09595;cursor:pointer}.mc.deu .ml{color:var(--rd);font-weight:600}
+.mc.sel{background:var(--pl);border-color:var(--purple);border-width:2px;cursor:pointer}.mc.sel .ml{color:var(--pd);font-weight:600}
+.mc.fut{background:var(--bg2);opacity:.5;cursor:default}.mc.na{background:var(--bg2);opacity:.3;cursor:default}
+.ml{font-size:12px;font-weight:500;display:block}.mm{font-size:11px;display:block;opacity:.8;margin-top:2px}.mi{font-size:13px;margin-bottom:2px;display:block}
+.res-pago{background:var(--pl);border:1px solid #AFA9EC;border-radius:var(--r);padding:14px;margin:10px 0;display:none}
+.res-pago.vis{display:block}
+.turno-sel{display:flex;gap:10px;margin-bottom:12px}
+.turno-btn{flex:1;padding:13px;border:2px solid var(--border2);border-radius:var(--r);background:var(--bg);cursor:pointer;text-align:center}
+.turno-btn.sb{border-color:var(--green);background:var(--gl)}.turno-btn.st{border-color:var(--purple);background:var(--pl)}
+.turno-btn h4{font-size:14px;font-weight:600;margin-bottom:3px}.turno-btn p{font-size:12px;color:var(--text2)}
+.turno-btn.sb h4{color:var(--gd)}.turno-btn.st h4{color:var(--pd)}
+.ins-prev{background:var(--pl);border:1px solid #AFA9EC;border-radius:var(--r);padding:14px;margin:10px 0;display:none}.ins-prev.vis{display:block}
+.ac-wrap{position:relative}
+.ac-drop{position:absolute;top:100%;left:0;right:0;background:var(--bg);border:1px solid var(--border2);border-radius:var(--r);z-index:100;max-height:220px;overflow-y:auto;display:none;margin-top:3px;box-shadow:0 4px 16px rgba(0,0,0,.12)}
+.ac-item{padding:9px 12px;font-size:13px;cursor:pointer}.ac-item:hover{background:var(--bg2)}
+.ac-item small{display:block;font-size:11px;color:var(--text2);margin-top:1px}
+.quick-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:18px}
+.qbtn{background:var(--bg);border:1px solid var(--border);border-radius:var(--rl2);padding:16px 14px;cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.qbtn:hover{background:var(--bg2)}.qbtn .qi{font-size:22px}.qbtn h4{font-size:14px;font-weight:600}.qbtn p{font-size:12px;color:var(--text2)}
+.nota-w{background:var(--al);border:1px solid #EF9F27;border-radius:var(--r);padding:11px 14px;font-size:13px;color:#633806;margin-bottom:14px}
+.nota-b{background:var(--bl);border:1px solid rgba(24,95,165,.3);border-radius:var(--r);padding:11px 14px;font-size:13px;color:var(--bd);margin-bottom:14px}
+.nota-g{background:var(--gl);border:1px solid rgba(29,158,117,.3);border-radius:var(--r);padding:11px 14px;font-size:13px;color:var(--gd);margin-bottom:14px}
+/* Comprobantes */
+.comp-wrap{background:#fff;color:#111;max-width:740px;margin:0 auto;padding:24px 28px;border:1px solid var(--border);border-radius:var(--r);font-family:Arial,sans-serif;font-size:11px;line-height:1.4}
+.comp-title{text-align:center;font-size:13px;font-weight:bold;text-decoration:underline;margin-bottom:4px}
+.comp-sub{text-align:center;font-size:9px;color:#555;margin-bottom:16px;padding:0 30px;line-height:1.5}
+.comp-num{text-align:right;font-size:10px;font-weight:bold;margin-bottom:6px}
+.comp-field{border:1px solid #888;padding:4px 8px;flex:1}.comp-field-lbl{font-size:8px;color:#555;font-weight:bold;text-transform:uppercase;margin-bottom:3px}.comp-field-val{font-size:11px;font-weight:bold}.comp-field-val.sm{font-size:10px;font-weight:normal}
+.comp-row{display:flex;gap:10px;margin-bottom:8px}
+.comp-table{width:100%;border-collapse:collapse;margin:10px 0;font-size:10px}
+.comp-table th{background:#222;color:#fff;padding:5px 6px;text-align:center;font-size:9px;border:1px solid #444}
+.comp-table td{border:1px solid #bbb;padding:5px 6px;text-align:center}
+.comp-table tr:nth-child(even) td{background:#f5f5f5}.comp-table tfoot td{border:1px solid #888;font-weight:bold;background:#eee}
+.comp-firma{display:flex;justify-content:flex-end;margin-top:20px}
+.comp-firma-box{border:1px solid #888;width:220px;height:60px;display:flex;align-items:center;justify-content:center;font-size:9px;color:#666}
+.islr-title-block{flex:1}.islr-title{font-weight:bold;font-size:12px;text-decoration:underline;margin-bottom:2px}
+.islr-decree{font-size:9px;color:#555}.islr-meta{text-align:right;font-size:10px}
+.islr-header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #222;padding-bottom:10px;margin-bottom:10px}
+.islr-parties{display:flex;gap:12px;margin:10px 0}
+.islr-party{flex:1;border:1px solid #888;padding:8px}
+.islr-party-title{font-size:9px;font-weight:bold;text-transform:uppercase;border-bottom:1px solid #ccc;padding-bottom:4px;margin-bottom:6px;color:#333}
+.islr-party-row{font-size:10px;margin-bottom:3px}.islr-party-row span{font-weight:bold}
+.islr-footer{display:flex;justify-content:space-between;margin-top:20px;align-items:flex-end}
+.islr-firma{border-top:1px solid #888;width:200px;padding-top:4px;text-align:center;font-size:9px;color:#555}
+.comp-panel{display:none}.comp-panel.active{display:block}
+/* Modal */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;align-items:center;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:var(--bg);border-radius:var(--rl2);padding:24px;width:500px;max-width:95vw;box-shadow:0 8px 40px rgba(0,0,0,.2);max-height:90vh;overflow-y:auto}
+.modal-title{font-size:16px;font-weight:700;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
+.modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--text2);padding:4px;line-height:1}
+/* Grade filter pills */
+.grade-pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.grade-pill{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--border2);background:var(--bg);color:var(--text2)}
+.grade-pill.active{background:var(--purple);color:#fff;border-color:var(--purple)}
+/* Banco cards */
+.banco-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.banco-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:14px}
+.banco-card-lbl{font-size:11px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.banco-card-val{font-size:20px;font-weight:700;color:var(--bd)}
+.banco-card-sub{font-size:11px;color:var(--text2);margin-top:3px}
+/* Txt / copy box */
+.copy-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;font-size:12px;font-family:monospace;white-space:pre-wrap;margin:10px 0;position:relative;line-height:1.6}
+.copy-btn-abs{position:absolute;top:8px;right:8px}
+/* Nomina notif */
+.nom-notif{background:var(--al);border:1px solid #EF9F27;border-radius:var(--r);padding:12px 14px;font-size:13px;margin-bottom:14px;display:none;align-items:flex-start;gap:10px}
+.nom-notif.vis{display:flex}
+/* Edit row highlight */
+.editing-row td{background:var(--pl)!important;outline:2px solid var(--purple)}
+@media print{.sidebar,.btn,.qbtn,.quick-grid,.tabs,.nota-w,.nota-b,.nota-g,.sb-logout,.modal-bg,.grade-pills{display:none!important}.main{padding:0}.comp-wrap{border:none}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="s-login" class="screen active">
+<div class="login-wrap"><div class="login-card">
+  <div class="login-logo">
+    <img src="data:image/png;base64,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" style="width:90px;height:90px;object-fit:contain;border-radius:8px">
+    <h1>U.E. Ntra. Sra. de los Reyes</h1>
+    <p>Sistema de gestión financiera</p>
+    <span class="ver">v7 — Mayo 2026</span><br><span id="db-status" style="font-size:11px;color:#BA7517">Verificando base de datos...</span>
+  </div>
+  <button class="role-btn dir" onclick="login('dir')">
+    <div class="rb-icon" style="background:var(--pl)">👑</div>
+    <div class="rb-info"><h3>Dirección</h3><p>Análisis financiero y verificación</p></div>
+  </button>
+  <button class="role-btn sec" onclick="login('sec')">
+    <div class="rb-icon" style="background:var(--gl)">✏️</div>
+    <div class="rb-info"><h3>Secretaria / Administración</h3><p>Carga de datos y gestión diaria</p></div>
+  </button>
+</div></div>
+</div>
+
+<!-- DIRECCIÓN -->
+<div id="s-dir" class="screen"></div>
+
+<!-- SECRETARIA -->
+<div id="s-sec" class="screen"></div>
+
+<!-- MODAL EDITAR REGISTRO -->
+<div class="modal-bg" id="modal-edit">
+  <div class="modal">
+    <div class="modal-title">Editar registro <button class="modal-close" onclick="closeModal('modal-edit')">×</button></div>
+    <div class="form-group" style="margin-bottom:12px"><label>Descripción</label><input type="text" id="edit-desc"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Monto (Bs.)</label><input type="number" id="edit-monto"></div>
+      <div class="form-group"><label>Banco</label>
+        <select id="edit-banco"><option>Fondo Común</option><option>Bancaribe</option><option>Provincial</option><option>Efectivo</option></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Categoría</label><input type="text" id="edit-cat"></div>
+      <div class="form-group"><label>Fecha</label><input type="date" id="edit-fecha"></div>
+    </div>
+    <div class="form-group" style="margin-bottom:16px"><label>Motivo de la corrección</label><textarea id="edit-motivo" rows="2" placeholder="Ej: Error de digitación en monto..."></textarea></div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-p" onclick="saveEdit()">Guardar corrección</button>
+      <button class="btn" onclick="closeModal('modal-edit')">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NUEVA PARTIDA -->
+<div class="modal-bg" id="modal-partida">
+  <div class="modal">
+    <div class="modal-title">Agregar nueva partida <button class="modal-close" onclick="closeModal('modal-partida')">×</button></div>
+    <div class="nota-b" style="margin-bottom:14px">Esta partida quedará disponible inmediatamente en todos los formularios de egreso.</div>
+    <div class="form-group" style="margin-bottom:12px"><label>Nombre de la partida</label><input type="text" id="np-nombre" placeholder="Ej: Mantenimiento de equipos"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Categoría contable</label>
+        <select id="np-cat">
+          <option>GASTOS FIJOS</option><option>RELACION LABORAL</option><option>IMPUESTOS SENIAT</option>
+          <option>PARAFISCALES</option><option>GASTOS HONORARIOS</option><option>GASTOS BANCARIOS</option>
+          <option>PAGOS SOCIOS</option><option>SUMINISTROS Y MATERIALES</option><option>OTROS</option>
+        </select>
+      </div>
+      <div class="form-group"><label>¿Genera retención?</label>
+        <select id="np-ret"><option value="">No aplica</option><option value="2">ISLR 2%</option><option value="3">ISLR 3%</option><option value="5">ISLR 5%</option><option value="iva">IVA 75%</option></select>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:4px">
+      <button class="btn btn-p" onclick="addPartida()">Agregar partida</button>
+      <button class="btn" onclick="closeModal('modal-partida')">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL TXT SENIAT -->
+<div class="modal-bg" id="modal-txt">
+  <div class="modal">
+    <div class="modal-title">Datos para SENIAT <button class="modal-close" onclick="closeModal('modal-txt')">×</button></div>
+    <div id="txt-content"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+// ═══════════════════════════════
+// DATOS GLOBALES
+// ═══════════════════════════════
+let BCV = 517.96;
+const SHEETS_URL = "https://script.google.com/macros/s/AKfycbxG5D5iV2J8Upl1qxzIffVxJuLZIY1BlsCkGajpwUTSJqiG5IpsNW6NmQeBILjyhZvgdw/exec";
+const LOGO_SRC = "data:image/png;base64,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";
+const TAR = {basico:150, tarde:190};
+const ML = ['Sep','Oct','Nov','Dic','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago'];
+const MF = ['Septiembre','Octubre','Noviembre','Diciembre','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto'];
+const MA = 8; // mes actual = índice 8 (Mayo)
+
+const COLEGIO = {
+  nombre:'UNIDAD EDUCATIVA P. NUESTRA SEÑORA DE LOS REYES',
+  rif_iva:'J-30844091-4', rif_islr:'J-30473183-3',
+  dir:'Calle La Ermita, Qta. Nuestra Querencia, Urb. La Gonzalera, San Antonio de los Altos, Los Salias, Miranda'
+};
+
+// ALUMNOS — representantes reales de los archivos de cobranza (datos de ejemplo por grado)
+const ALUMNOS = [
+  {n:'Parra Izquiel, Ana Valentina',g:'Preescolar A',t:'basico',r:'Ana Parra',tel:'0414-1234567',mi:0,p:[1,1,1,1,1,1,1,1,0,0,0,0],a:[0,0,0,0,0,0,0,0,0,0,0,0]},
+  {n:'Ciarmolli Barleta, Stefania',g:'Preescolar A',t:'tarde',r:'Stefania Ciarmolli',tel:'0412-2345678',mi:0,p:[1,1,1,1,1,1,1,0,0,0,0,0],a:[0,0,0,0,0,0,0,0,0,0,0,0]},
+  {n:'Fuenmayor Loyo, Gustavo',g:'Preescolar B',t:'basico',r:'Gustavo Fuenmayor',tel:'0416-3456789',mi:0,p:[1,1,1,1,1,1,1,1,0,0,0,0],a:[0,0,0,0,0,0,0,0,0,0,0,0]},
+  {n:'López Ariza, Luis José',g:'Preescolar B',t:'tarde',r:'Luis López',tel:'0424-4567890',mi:0,p:[1,0,0,0,0,0,0,0,0,0,0,0],a:[0,0,0,0,0,0,0,0,0,0,0,0]},
+  {n:'Da Costa Puertas, Oriana',g:'1er Grado',t:'basico',r:'Oriana Da Costa',tel:'0412-5678901',mi:0,p:[1,1,1,1,1,1,1,1,0,0,0,0],a:[0,0,0,0,0,0,0,0,0,0,0,0]},
+  {n:'Rivero Rivero, Loingrid',g:'1er Grado',t:'tarde',r:'Loingrid Rivero',tel:'0416-6789012',mi:0,p:[1,1,1,1,0,0,0,0,0,0,0,0],a:[0,0,0,0,25000,0,0,0,0,0,0,0]},
+  {n:'González González, Arnaldo',g:'2do Grado',t:'basico',r:'Arnaldo González',tel:'0414-7890123',mi:0,p:[1,1,1,1,1,1,1,1,0,0,0,0],a:[0,0,0,0,0,0,0,0,0,0,0,0]},
+  {n:'Sosa Castillo, Oriana',g:'2do Grado',t:'basico',r:'Oriana Sosa',tel:'0426-8901234',mi:0,p:[1,1,1,0,0,0,0,0,0,0,0,0],a:[0,0,0,0,0,0,0,0,0,0,0,0]},
+  {n:'Medina Díaz, Víctor Manuel',g:'3er Grado',t:'tarde',r:'Víctor Medina',tel:'0412-9012345',mi:0,p:[1,1,1,1,1,0,0,0,0,0,0,0],a:[0,0,0,0,0,0,0,0,0,0,0,0]},
+  {n:'Ledezma Flórez, Norbelys',g:'3er Grado',t:'basico',r:'Norbelys Ledezma',tel:'0414-0123456',mi:0,p:[1,1,1,1,1,1,1,1,0,0,0,0],a:[0,0,0,0,0,0,0,0,0,0,0,0]},
+  {n:'Goncalvez Da Silva, Sandra',g:'4to Grado',t:'tarde',r:'Sandra Goncalvez',tel:'0412-1234567',mi:0,p:[1,1,1,1,1,1,1,0,0,0,0,0],a:[0,0,0,0,0,0,0,0,0,0,0,0]},
+  {n:'Morales De Pool, Gabriel',g:'4to Grado',t:'basico',r:'Gabriel Morales',tel:'0416-2345678',mi:0,p:[1,1,1,1,0,0,0,0,0,0,0,0],a:[0,0,0,0,0,0,0,0,0,0,0,0]},
+  {n:'Rodríguez de Abreu, Ana',g:'5to Grado',t:'tarde',r:'Ana Rodríguez',tel:'0414-3456789',mi:0,p:[1,1,1,1,1,1,0,0,0,0,0,0],a:[0,0,0,0,0,0,0,0,0,0,0,0]},
+  {n:'Sanchez Angulo, Ana Yuneri',g:'5to Grado',t:'basico',r:'Ana Sanchez',tel:'0424-4567890',mi:0,p:[1,1,1,1,1,1,1,1,0,0,0,0],a:[0,0,0,0,0,0,0,0,0,0,0,0]},
+  {n:'Blanco Molina, María Fernanda',g:'6to Grado',t:'tarde',r:'María Blanco',tel:'0412-5678901',mi:0,p:[1,1,1,1,1,1,1,0,0,0,0,0],a:[0,0,0,0,0,0,0,0,0,0,0,0]},
+  {n:'Bustamante González, María',g:'6to Grado',t:'basico',r:'María Bustamante',tel:'0416-6789012',mi:0,p:[1,1,1,1,1,1,1,1,0,0,0,0],a:[0,0,0,0,0,0,0,0,0,0,0,0]},
+];
+
+const GRADOS = ['Todos','Preescolar A','Preescolar B','1er Grado','2do Grado','3er Grado','4to Grado','5to Grado','6to Grado'];
+
+// EMPLEADOS — datos reales de la nómina 1ra quincena abril 2026
+const EMPLEADOS = [
+  {n:'Zoraida Arteaga',ci:'9485199',cargo:'Propietaria',sueldo:16716.91,abo:0,atr:0,prest:0},
+  {n:'Belkys Manrique',ci:'11471514',cargo:'Dirección',sueldo:11940.65,abo:0,atr:0,prest:0},
+  {n:'Grexy Matamoros',ci:'14850276',cargo:'Administración',sueldo:9552.52,abo:0,atr:0,prest:0},
+  {n:'Hellem Brizuela',ci:'25840965',cargo:'Secretaria',sueldo:8597.27,abo:0,atr:0,prest:0},
+  {n:'Maria Ana Ferrer',ci:'12159775',cargo:'Docente P1-P2',sueldo:8597.27,abo:0,atr:0,prest:0},
+  {n:'María Elena Quevedo',ci:'16328032',cargo:'Docente 1ro',sueldo:8597.27,abo:0,atr:0,prest:0},
+  {n:'Maribel Urbano',ci:'10381230',cargo:'Docente 2do',sueldo:8597.27,abo:0,atr:0,prest:0},
+  {n:'Yetsire Reseco',ci:'18234890',cargo:'Docente 3ro',sueldo:8597.27,abo:0,atr:0,prest:0},
+  {n:'Greysmar Camacho',ci:'16791210',cargo:'Docente 4to',sueldo:8597.27,abo:0,atr:0,prest:0},
+  {n:'Haydi Valery',ci:'10203360',cargo:'Docente 5to',sueldo:14328.78,abo:0,atr:0,prest:0},
+  {n:'Adriana Martínez',ci:'12383233',cargo:'Docente 6to',sueldo:8597.27,abo:0,atr:0,prest:0,prestSaldo:13000},
+  {n:'Nadia Sierra',ci:'9480774',cargo:'Docente TD',sueldo:8597.27,abo:0,atr:0,prest:0,prestSaldo:8834.29},
+  {n:'Brigitte Cortez',ci:'20748257',cargo:'Auxiliar T/D',sueldo:8597.27,abo:0,atr:0,prest:0},
+  {n:'Mary Cruz Puerta',ci:'17978488',cargo:'Auxiliar MD',sueldo:7642.01,abo:0,atr:0,prest:0},
+  {n:'Carolina Pérez',ci:'24286044',cargo:'Mantenimiento',sueldo:8597.27,abo:0,atr:0,prest:0},
+  {n:'Zoribel Fernandez',ci:'26921314',cargo:'Docente',sueldo:8597.27,abo:0,atr:0,prest:0},
+  {n:'Santiago Fernández',ci:'29555814',cargo:'Docente',sueldo:8597.27,abo:0,atr:0,prest:0},
+];
+
+// PARTIDAS DE EGRESO — todas las reales de los analíticos
+let PARTIDAS = [
+  // INGRESOS
+  {n:'INGRESOS POR FACTURACIÓN',cat:'INGRESOS',ret:''},
+  {n:'CAJA EFECTIVO',cat:'INGRESOS',ret:''},
+  // RELACION LABORAL
+  {n:'Nómina — sueldo planta fija',cat:'RELACION LABORAL',ret:''},
+  {n:'Bono alimentación',cat:'RELACION LABORAL',ret:''},
+  {n:'Bono transporte',cat:'RELACION LABORAL',ret:''},
+  {n:'Retroactivo salarial',cat:'RELACION LABORAL',ret:''},
+  {n:'Vacaciones',cat:'RELACION LABORAL',ret:''},
+  {n:'Prestaciones sociales',cat:'RELACION LABORAL',ret:''},
+  {n:'Utilidades',cat:'RELACION LABORAL',ret:''},
+  {n:'Anticipos de prestaciones',cat:'RELACION LABORAL',ret:''},
+  {n:'Préstamos a empleados',cat:'RELACION LABORAL',ret:''},
+  // GASTOS FIJOS
+  {n:'Corpoelec — colegio',cat:'GASTOS FIJOS',ret:''},
+  {n:'Corpoelec — otros',cat:'GASTOS FIJOS',ret:''},
+  {n:'Hidrocapital NIC 3019570',cat:'GASTOS FIJOS',ret:''},
+  {n:'Hidrocapital NIC 3020386',cat:'GASTOS FIJOS',ret:''},
+  {n:'Hidrocapital NIC 3019538',cat:'GASTOS FIJOS',ret:''},
+  {n:'CANTV — 4 líneas',cat:'GASTOS FIJOS',ret:''},
+  {n:'Movistar',cat:'GASTOS FIJOS',ret:''},
+  {n:'INTER — internet',cat:'GASTOS FIJOS',ret:''},
+  {n:'Power Link',cat:'GASTOS FIJOS',ret:''},
+  // GASTOS BANCARIOS
+  {n:'Comisiones bancarias',cat:'GASTOS BANCARIOS',ret:''},
+  {n:'Servicios y gastos bancarios',cat:'GASTOS BANCARIOS',ret:''},
+  // IMPUESTOS SENIAT
+  {n:'IVA F-99044 — anticipado',cat:'IMPUESTOS SENIAT',ret:''},
+  {n:'IVA F-99026 — declaración',cat:'IMPUESTOS SENIAT',ret:''},
+  {n:'Retención ISLR F-99074',cat:'IMPUESTOS SENIAT',ret:''},
+  {n:'Retención IVA F-99035',cat:'IMPUESTOS SENIAT',ret:''},
+  {n:'ISLR F-99019',cat:'IMPUESTOS SENIAT',ret:''},
+  {n:'ISLR F-99016',cat:'IMPUESTOS SENIAT',ret:''},
+  {n:'Protección Pensiones DPP',cat:'IMPUESTOS SENIAT',ret:''},
+  // PARAFISCALES
+  {n:'IVSS / SSO patronal',cat:'PARAFISCALES',ret:''},
+  {n:'INCES 2% nómina',cat:'PARAFISCALES',ret:''},
+  {n:'BANAVIH / FAOV',cat:'PARAFISCALES',ret:''},
+  // HONORARIOS
+  {n:'Honorarios especialistas',cat:'GASTOS HONORARIOS',ret:'5'},
+  {n:'Honorarios Fleitas Arocha & Asociados',cat:'GASTOS HONORARIOS',ret:'5'},
+  {n:'Honorarios profesionales varios',cat:'GASTOS HONORARIOS',ret:'5'},
+  // SOCIOS
+  {n:'Condominio Alcaravanes',cat:'PAGOS SOCIOS',ret:''},
+  {n:'Condominio Puerto Plata',cat:'PAGOS SOCIOS',ret:''},
+  {n:'Póliza de auto',cat:'PAGOS SOCIOS',ret:''},
+  {n:'Gastos personales socios',cat:'PAGOS SOCIOS',ret:''},
+  {n:'Tarjeta débito 5672 Bancaribe',cat:'PAGOS SOCIOS',ret:''},
+  // OTROS
+  {n:'Cambio de divisas',cat:'CAMBIO DIVISAS',ret:''},
+  {n:'Gestiones y permisos',cat:'GESTIONES',ret:''},
+  {n:'Servicio técnico equipos',cat:'GESTIONES',ret:'2'},
+  {n:'Suministros de oficina',cat:'SUMINISTROS',ret:''},
+  {n:'Materiales y ferretería',cat:'SUMINISTROS',ret:'3'},
+  {n:'Actividad económica — Alcaldía Los Salias',cat:'IMPUESTOS MUNICIPALES',ret:''},
+  {n:'IVSS — declaración deberes formales',cat:'DEBERES FORMALES',ret:''},
+  {n:'INCES — declaración deberes formales',cat:'DEBERES FORMALES',ret:''},
+  {n:'BANAVIH — declaración deberes formales',cat:'DEBERES FORMALES',ret:''},
+];
+
+const PROVS = [
+  {n:'Fleitas Arocha & Asociados',r:'J-40119847-5',t:'0.05'},
+  {n:'Inversiones APY C.A.',r:'J-29733251-9',t:'0.02'},
+  {n:'Ferretería Castro',r:'J-00000001-0',t:'0.03'},
+  {n:'INTEGCONSULT 896 C.A.',r:'J-40049858-9',t:'0.05'},
+  {n:'Lilis Market 888 C.A.',r:'J-40885461-4',t:'0.02'},
+];
+
+const MD = [
+  {lbl:'Sep 2025',ing:584237,eg:411864,inc:[],mov:[
+    {f:'05/09',d:'Mensualidades septiembre',p:'INGRESOS FACTURACIÓN',b:'Fondo Común',m:584237,t:'ing',i:false},
+    {f:'06/09',d:'Nómina 1ra quincena sept.',p:'Nómina — sueldo planta fija',b:'Bancaribe',m:-205000,t:'eg',i:false},
+    {f:'15/09',d:'Corpoelec colegio',p:'Corpoelec — colegio',b:'Bancaribe',m:-18400,t:'eg',i:false},
+    {f:'20/09',d:'Nómina 2da quincena sept.',p:'Nómina — sueldo planta fija',b:'Bancaribe',m:-188464,t:'eg',i:false},
+  ]},
+  {lbl:'Oct 2025',ing:96213,eg:201580,inc:[
+    {tipo:2,desc:'Suma de egresos no coincide con total declarado',monto:'Bs. 12.340',mi:1}
+  ],mov:[
+    {f:'03/10',d:'Mensualidades octubre (parcial)',p:'INGRESOS FACTURACIÓN',b:'Fondo Común',m:96213,t:'ing',i:false},
+    {f:'04/10',d:'CANTV 4 líneas',p:'CANTV — 4 líneas',b:'Bancaribe',m:-8200,t:'eg',i:true},
+    {f:'07/10',d:'Condominio Alcaravanes socios',p:'Condominio Alcaravanes',b:'Bancaribe',m:-45000,t:'eg',i:false},
+    {f:'15/10',d:'Honorarios Fleitas Arocha',p:'Honorarios Fleitas Arocha & Asociados',b:'Fondo Común',m:-22000,t:'eg',i:false},
+  ]},
+  {lbl:'Nov 2025',ing:1956367,eg:2289513,inc:[],mov:[
+    {f:'03/11',d:'Mensualidades noviembre',p:'INGRESOS FACTURACIÓN',b:'Fondo Común',m:1956367,t:'ing',i:false},
+    {f:'05/11',d:'Nómina 1ra quincena nov.',p:'Nómina — sueldo planta fija',b:'Bancaribe',m:-812000,t:'eg',i:false},
+    {f:'18/11',d:'Cambio divisas',p:'Cambio de divisas',b:'Provincial',m:-415000,t:'eg',i:false},
+    {f:'20/11',d:'Nómina 2da quincena nov.',p:'Nómina — sueldo planta fija',b:'Bancaribe',m:-798513,t:'eg',i:false},
+  ]},
+  {lbl:'Dic 2025',ing:2716480,eg:7090160,inc:[
+    {tipo:1,desc:'Pago en Bancaribe no figura en sistema',monto:'Bs. 45.000',mi:2}
+  ],mov:[
+    {f:'03/12',d:'Mensualidades dic + matrículas',p:'INGRESOS FACTURACIÓN',b:'Fondo Común',m:2716480,t:'ing',i:false},
+    {f:'05/12',d:'Nómina 1ra quincena dic.',p:'Nómina — sueldo planta fija',b:'Bancaribe',m:-1180000,t:'eg',i:false},
+    {f:'10/12',d:'Tarjeta débito 5672 gastos socios',p:'Tarjeta débito 5672 Bancaribe',b:'Bancaribe',m:-815000,t:'eg',i:true},
+    {f:'15/12',d:'Corpoelec + Hidrocapital',p:'Corpoelec — colegio',b:'Fondo Común',m:-92000,t:'eg',i:false},
+    {f:'20/12',d:'Nómina 2da quincena dic.',p:'Nómina — sueldo planta fija',b:'Bancaribe',m:-1180000,t:'eg',i:false},
+  ]},
+  {lbl:'Ene 2026',ing:3007220,eg:6244312,inc:[],mov:[
+    {f:'04/01',d:'Mensualidades enero',p:'INGRESOS FACTURACIÓN',b:'Fondo Común',m:3007220,t:'ing',i:false},
+    {f:'06/01',d:'Nómina 1ra quincena ene.',p:'Nómina — sueldo planta fija',b:'Bancaribe',m:-1340000,t:'eg',i:false},
+    {f:'10/01',d:'ISLR anticipado F-99044',p:'IVA F-99044 — anticipado',b:'Fondo Común',m:-185000,t:'eg',i:false},
+    {f:'20/01',d:'Nómina 2da quincena ene.',p:'Nómina — sueldo planta fija',b:'Bancaribe',m:-1340000,t:'eg',i:false},
+  ]},
+  {lbl:'Feb 2026',ing:3719200,eg:8471603,inc:[],mov:[
+    {f:'03/02',d:'Mensualidades febrero',p:'INGRESOS FACTURACIÓN',b:'Fondo Común',m:3719200,t:'ing',i:false},
+    {f:'05/02',d:'Nómina 1ra quincena feb.',p:'Nómina — sueldo planta fija',b:'Bancaribe',m:-1800000,t:'eg',i:false},
+    {f:'12/02',d:'Especialistas inglés, música, computación',p:'Honorarios especialistas',b:'Provincial',m:-420000,t:'eg',i:false},
+    {f:'20/02',d:'Nómina 2da quincena feb.',p:'Nómina — sueldo planta fija',b:'Bancaribe',m:-1820000,t:'eg',i:false},
+  ]},
+  {lbl:'Mar 2026',ing:256080,eg:0,inc:[
+    {tipo:2,desc:'Mes incompleto — solo ingresos parciales sin egresos',monto:'Incompleto',mi:0}
+  ],mov:[
+    {f:'03/03',d:'Cobros parciales marzo (incompleto)',p:'INGRESOS FACTURACIÓN',b:'Fondo Común',m:256080,t:'ing',i:true},
+  ]},
+  {lbl:'Abr 2026',ing:142500,eg:107480,inc:[
+    {tipo:1,desc:'Bancaribe: banco Bs. 22.400 vs sistema Bs. 24.100',monto:'Bs. 1.700',mi:1},
+    {tipo:2,desc:'Retención ISLR especialistas no registrada como egreso',monto:'Bs. 5.750',mi:3}
+  ],mov:[
+    {f:'05/04',d:'Mensualidades abril básico',p:'INGRESOS FACTURACIÓN',b:'Fondo Común',m:89700,t:'ing',i:false},
+    {f:'05/04',d:'Mensualidades abril tarde',p:'INGRESOS FACTURACIÓN',b:'Bancaribe',m:41040,t:'ing',i:true},
+    {f:'07/04',d:'Inscripciones nuevas',p:'INGRESOS FACTURACIÓN',b:'Fondo Común',m:11760,t:'ing',i:false},
+    {f:'10/04',d:'Nómina 1ra quincena abril',p:'Nómina — sueldo planta fija',b:'Bancaribe',m:-870075,t:'eg',i:true},
+    {f:'15/04',d:'Corpoelec + Hidrocapital + CANTV',p:'Corpoelec — colegio',b:'Bancaribe',m:-18400,t:'eg',i:false},
+    {f:'22/04',d:'Retención IVA declarada',p:'Retención IVA F-99035',b:'Fondo Común',m:-2100,t:'eg',i:false},
+    {f:'25/04',d:'Especialistas inglés + música + comp.',p:'Honorarios especialistas',b:'Provincial',m:-16200,t:'eg',i:false},
+    {f:'30/04',d:'Nómina 2da quincena abril',p:'Nómina — sueldo planta fija',b:'Bancaribe',m:-889117,t:'eg',i:false},
+  ]},
+  {lbl:'May 2026',ing:0,eg:0,inc:[],mov:[]},
+];
+
+const OBLIG = [
+  {id:'ret-iva-may1',n:'Retención IVA 1ra quincena mayo (F-99035)',v:'20/05/2026',d:0,m:'~Bs. 2.100',per:'Quincenal',link:'https://declaraciones.seniat.gob.ve'},
+  {id:'ret-islr-abr',n:'Retención ISLR abril (F-99074)',v:'05/05/2026',d:-14,m:'Bs. 4.500',per:'Mensual',link:'https://declaraciones.seniat.gob.ve'},
+  {id:'ivss-may',n:'IVSS patronal mayo',v:'05/05/2026',d:-14,m:'~Bs. 3.800',per:'Mensual',link:'https://www.ivss.gob.ve'},
+  {id:'banavih-may',n:'BANAVIH / FAOV mayo',v:'05/05/2026',d:-14,m:'~Bs. 1.200',per:'Mensual',link:'https://www.banavih.gob.ve'},
+  {id:'dpp-may',n:'Protección Pensiones (DPP) mayo',v:'21/05/2026',d:1,m:'~Bs. 1.800',per:'Mensual',link:'https://declaraciones.seniat.gob.ve'},
+  {id:'alcaldia',n:'Alcaldía Los Salias — actividad económica',v:'31/05/2026',d:11,m:'~Bs. 1.200',per:'Mensual',link:''},
+  {id:'inces-q2',n:'INCES 2% 2do trimestre (abr–jun)',v:'05/07/2026',d:46,m:'~Bs. 2.500',per:'Trimestral',link:'https://www.inces.gob.ve'},
+];
+
+// ESTADO
+let mesActual = 7;
+let cobSel = {};
+let turno2 = null;
+let fiscPag = {};
+let saldos = {fc:48200, bc:24100, pv:12400};
+let islrOps = [];
+let ivaOps = [];
+let misRegistros = [
+  {id:1,f:'05/05',d:'Mensualidad Parra Izquiel - Abr',p:'INGRESOS FACTURACIÓN',b:'Fondo Común',m:77694,t:'ing'},
+  {id:2,f:'05/05',d:'Corpoelec — colegio mayo',p:'Corpoelec — colegio',b:'Bancaribe',m:-8200,t:'eg'},
+  {id:3,f:'06/05',d:'Mensualidad González González - Sep-Oct',p:'INGRESOS FACTURACIÓN',b:'Fondo Común',m:98412,t:'ing'},
+  {id:4,f:'07/05',d:'Ferretería Castro — materiales',p:'Materiales y ferretería',b:'Bancaribe',m:-15300,t:'eg'},
+];
+let editIdx = null;
+let gradoFiltro = 'Todos';
+let nomNotif = null;
+
+// ═══════════════════════════════
+// UTILIDADES
+// ═══════════════════════════════
+const fmt = n => Math.abs(n).toLocaleString('es-VE',{minimumFractionDigits:0,maximumFractionDigits:2});
+const fmtM = n => n.toLocaleString('es-VE',{minimumFractionDigits:2,maximumFractionDigits:2});
+const today = () => new Date().toISOString().slice(0,10);
+function fmtD(s){if(!s)return'--';const p=s.split('-');return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:s;}
+function sp(role,page,nav){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nitem').forEach(n=>n.classList.remove('active'));
+  const pg=document.getElementById(page);if(pg)pg.classList.add('active');
+  const ni=document.getElementById(nav);if(ni)ni.classList.add('active');
+  if(page==='d-dash')setTimeout(initCharts,50);
+  if(page==='d-mes')setTimeout(renderMes,50);
+  if(page==='s-fisc')setTimeout(renderFiscSec,10);
+  if(page==='d-fisc')setTimeout(renderFiscDir,10);
+  if(page==='d-nomdir')setTimeout(renderDirNom,10);
+  if(page==='s-nom')renderNomNotif();
+}
+function showTab(id,btn){
+  const par=btn.closest('.card')||btn.closest('.page');
+  par.querySelectorAll('.subtab').forEach(s=>s.classList.remove('active'));
+  par.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  const el=document.getElementById(id);if(el)el.classList.add('active');
+  btn.classList.add('active');
+}
+function switchComp(which){
+  document.querySelectorAll('.comp-panel').forEach(p=>{p.classList.remove('active');p.style.display='none';});
+  document.querySelectorAll('.comp-tab').forEach(t=>t.classList.remove('active'));
+  const cp=document.getElementById('cp-'+which);if(cp){cp.classList.add('active');cp.style.display='block';}
+  event.target.classList.add('active');
+}
+function logout(){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s-login').classList.add('active');
+}
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function updBCV(){
+  const v=parseFloat(document.getElementById('bcv-input')?.value)||BCV;
+  BCV=v;
+  const el2=document.getElementById('bcv-input2');if(el2)el2.value=v;
+  const nota=document.getElementById('cob-nota');if(nota)nota.textContent='Tasa BCV: Bs. '+fmtM(BCV)+' / USD';
+}
+
+// ═══════════════════════════════
+// LOGIN
+// ═══════════════════════════════
+function login(role){
+  testDB();
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  if(role==='dir'){
+    document.getElementById('s-dir').innerHTML=buildDir();
+    document.getElementById('s-dir').classList.add('active');
+    setTimeout(()=>{initCharts();renderFiscDir();},100);
+  } else {
+    document.getElementById('s-sec').innerHTML=buildSec();
+    document.getElementById('s-sec').classList.add('active');
+    setTimeout(()=>{renderIslrOps();renderIvaOps();renderFiscSec();renderMisReg();renderCierreList();},100);
+    const t=today();const ci=document.getElementById('cob-tasa-input');if(ci)ci.value=BCV;
+  ['cob-fecha','eg-fecha','nom-fecha','esp-fecha','islr-fecha','iva-fecha'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=t;});
+  }
+}
+
+// ═══════════════════════════════
+// BUILD DIRECCIÓN
+// ═══════════════════════════════
+function mesesFila(data){
+  return data.map(d=>{
+    const bal=d.ing-d.eg;const mg=d.eg>0?((bal/d.ing)*100).toFixed(1):'--';
+    return`<tr><td>${d.lbl}</td><td style="color:#3B6D11">${fmt(d.ing)}</td><td style="color:#A32D2D">${d.eg?fmt(d.eg):'--'}</td><td style="color:${bal>=0?'#185FA5':'#A32D2D'};font-weight:600">${fmt(bal)}</td><td>${mg==='--'?'--':mg+'%'}</td><td>${bal>=0?'<span class="badge bg">Superávit</span>':'<span class="badge br">Déficit</span>'}</td></tr>`;
+  }).join('');
+}
+
+function buildDir(){
+  const ingTotal=MD.reduce((s,m)=>s+m.ing,0);
+  const egTotal=MD.reduce((s,m)=>s+m.eg,0);
+  const mesesHeader=ML.slice(0,MA).map(m=>`<th style="width:7%">${m}</th>`).join('');
+  const aluRows=ALUMNOS.map(a=>{
+    const d=a.p.slice(0,MA).filter((v,i)=>i>=a.mi&&!v).length;
+    return`<tr><td>${a.n}</td><td>${a.g}</td><td><span class="badge ${a.t==='basico'?'bg':'bp'}">${a.t==='basico'?'B':'T'}</span></td>${a.p.slice(0,MA).map((v,i)=>`<td><span class="sem ${i<a.mi?'sa':v?'sv':'sr'}"></span></td>`).join('')}<td>${d===0?'<span class="badge bg">Al día</span>':`<span class="badge ${d>=3?'br':'ba'}">${d}m</span>`}</td></tr>`;
+  }).join('');
+
+  return`<div class="app">
+<div class="sidebar">
+  <div class="sb-header"><div class="sb-chip chip-dir">Dirección</div><div class="sb-name">Panel directivo</div><div class="sb-sub">Solo lectura</div></div>
+  <div class="nav-group"><div class="nav-label">Visión general</div>
+    <div class="nitem nd active" id="nd-dash" onclick="sp('dir','d-dash','nd-dash')">Dashboard</div>
+    <div class="nitem nd" id="nd-mes" onclick="sp('dir','d-mes','nd-mes')">Revisar por mes</div>
+    <div class="nitem nd" id="nd-comp" onclick="sp('dir','d-comp','nd-comp')">Comparativo anual</div>
+  </div>
+  <div class="nav-group"><div class="nav-label">Control</div>
+    <div class="nitem nd" id="nd-fisc" onclick="sp('dir','d-fisc','nd-fisc')">Calendario fiscal</div>
+    <div class="nitem nd" id="nd-deudas" onclick="sp('dir','d-deudas','nd-deudas')">Deudas de alumnos</div>
+    <div class="nitem nd" id="nd-mat" onclick="sp('dir','d-mat','nd-mat')">Matrícula completa</div>
+  </div>
+  <div class="nav-group"><div class="nav-label">Cierre</div>
+    <div class="nitem nd" id="nd-res" onclick="sp('dir','d-res','nd-res')">Resultado mensual</div>
+    <div class="nitem nd" id="nd-nomdir" onclick="sp('dir','d-nomdir','nd-nomdir')">Nómina</div>
+  </div>
+  <div class="sb-bcv"><label>Tasa BCV hoy</label><input id="bcv-input2" type="number" value="${BCV}" onchange="BCV=parseFloat(this.value)||BCV"></div>
+  <div class="sb-logout"><button onclick="logout()">Cerrar sesión</button></div>
+</div>
+<div class="main">
+
+<!-- DASHBOARD -->
+<div id="d-dash" class="page active">
+  <p class="page-title">Dashboard ejecutivo</p>
+  <p class="page-sub">Año escolar 2025–2026 — Actualizado al cierre de abril 2026</p>
+  
+  <div class="banco-cards">
+    <div class="banco-card"><div class="banco-card-lbl">Fondo Común</div><div class="banco-card-val">Bs. ${fmt(saldos.fc)}</div><div class="banco-card-sub">Último movimiento: 07/05</div></div>
+    <div class="banco-card"><div class="banco-card-lbl">Bancaribe</div><div class="banco-card-val" style="color:#A32D2D">Bs. ${fmt(saldos.bc)}</div><div class="banco-card-sub" style="color:#A32D2D">⚠ Diferencia de Bs. 1.700</div></div>
+    <div class="banco-card"><div class="banco-card-lbl">Provincial</div><div class="banco-card-val">Bs. ${fmt(saldos.pv)}</div><div class="banco-card-sub">Estado de cuenta: pendiente</div></div>
+  </div>
+
+  <div class="metrics">
+    <div class="metric"><label>Total recaudado (año)</label><div class="metric-val">Bs. ${fmt(ingTotal)}</div><div class="metric-sub">Sep 2025 – Abr 2026</div></div>
+    <div class="metric"><label>Total egresos (año)</label><div class="metric-val" style="color:#A32D2D">Bs. ${fmt(egTotal)}</div></div>
+    <div class="metric"><label>Balance acumulado</label><div class="metric-val" style="color:${ingTotal-egTotal>=0?'#185FA5':'#A32D2D'}">Bs. ${fmt(ingTotal-egTotal)}</div></div>
+    <div class="metric"><label>Alumnos inscritos</label><div class="metric-val">${ALUMNOS.length}</div><div class="metric-sub">Básico ${ALUMNOS.filter(a=>a.t==='basico').length} / Tarde ${ALUMNOS.filter(a=>a.t==='tarde').length}</div></div>
+    <div class="metric"><label>Con deuda</label><div class="metric-val" style="color:#A32D2D">${ALUMNOS.filter(a=>a.p.slice(0,MA).some((v,i)=>i>=a.mi&&!v)).length}</div></div>
+    <div class="metric"><label>Empleados</label><div class="metric-val">${EMPLEADOS.length}</div></div>
+  </div>
+  <div class="card"><div class="card-title">Ingresos vs egresos — últimos 4 meses</div><div class="chart-wrap"><canvas id="ch1"></canvas></div></div>
+  <div class="card">
+    <div class="card-title">Obligaciones fiscales activas</div>
+    <div style="display:flex;gap:10px;margin-bottom:8px">
+      <div class="metric" style="margin-bottom:0"><label>Pagadas</label><div id="fd-p" class="metric-val" style="color:#3B6D11">0</div></div>
+      <div class="metric" style="margin-bottom:0"><label>Pendientes</label><div id="fd-pe" class="metric-val" style="color:#BA7517">0</div></div>
+      <div class="metric" style="margin-bottom:0"><label>Vencidas</label><div id="fd-v" class="metric-val" style="color:#A32D2D">0</div></div>
+    </div>
+    <div id="fisc-dash"></div>
+  </div>
+</div>
+
+<!-- MES -->
+<div id="d-mes" class="page">
+  <p class="page-title">Revisar por mes</p>
+  <div class="mes-nav">
+    <button onclick="cambiarMes(-1)">&#8249;</button>
+    <span class="mes-nav-lbl" id="mes-lbl">Abr 2026</span>
+    <span class="badge bb" id="mes-badge">Histórico</span>
+    <button onclick="cambiarMes(1)">&#8250;</button>
+  </div>
+  <div class="metrics">
+    <div class="metric"><label>Ingresos</label><div class="metric-val" style="color:#3B6D11" id="mes-ing">--</div></div>
+    <div class="metric"><label>Egresos</label><div class="metric-val" style="color:#A32D2D" id="mes-eg">--</div></div>
+    <div class="metric"><label>Balance</label><div class="metric-val" id="mes-bal">--</div></div>
+    <div class="metric"><label>Incongruencias</label><div class="metric-val" id="mes-ni">0</div></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Incongruencias detectadas <span class="badge br" id="inc-badge">0 este mes</span></div>
+    <div id="inc-lista"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Movimientos del mes
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+        <select id="mov-filt" onchange="filtMov()" style="font-size:12px;padding:5px 8px;border:1px solid var(--border2);border-radius:var(--r);background:var(--bg)">
+          <option value="">Todos</option><option value="ing">Solo ingresos</option><option value="eg">Solo egresos</option><option value="inc">Solo marcados</option>
+        </select>
+      </div>
+    </div>
+    <table><thead><tr><th style="width:9%">Fecha</th><th style="width:28%">Descripción</th><th style="width:20%">Partida</th><th style="width:13%">Banco</th><th style="width:13%">Monto Bs.</th><th style="width:8%">USD</th><th style="width:9%">Estado</th></tr></thead>
+    <tbody id="mov-tbody"></tbody></table>
+  </div>
+</div>
+
+<!-- COMPARATIVO -->
+<div id="d-comp" class="page">
+  <p class="page-title">Comparativo anual</p><p class="page-sub">Mes a mes — año escolar 2025–2026</p>
+  <div class="card"><div class="card-title">Ingresos vs egresos</div><div class="chart-wrap"><canvas id="ch2"></canvas></div></div>
+  <div class="card"><div class="card-title">Resumen por mes</div>
+    <table><thead><tr><th style="width:14%">Mes</th><th style="width:20%">Ingresos Bs.</th><th style="width:20%">Egresos Bs.</th><th style="width:18%">Balance</th><th style="width:12%">Margen</th><th style="width:16%">Estado</th></tr></thead>
+    <tbody>${mesesFila(MD)}</tbody></table>
+  </div>
+</div>
+
+<!-- FISCAL DIRECCIÓN -->
+<div id="d-fisc" class="page">
+  <p class="page-title">Calendario fiscal</p><p class="page-sub">Obligaciones del colegio — RIF terminal 4</p>
+  <div id="fisc-dir"></div>
+</div>
+
+<!-- DEUDAS -->
+<div id="d-deudas" class="page">
+  <p class="page-title">Deudas de alumnos</p><p class="page-sub">Turno básico $${TAR.basico} / tarde $${TAR.tarde}</p>
+  <div class="metrics">
+    <div class="metric"><label>Deuda total estimada</label><div class="metric-val" style="color:#A32D2D">USD ${ALUMNOS.reduce((s,a)=>{const nd=a.p.slice(0,MA).filter((v,i)=>i>=a.mi&&!v).length;return s+nd*TAR[a.t];},0)}</div></div>
+    <div class="metric"><label>Morosos básico</label><div class="metric-val">${ALUMNOS.filter(a=>a.t==='basico'&&a.p.slice(0,MA).some((v,i)=>i>=a.mi&&!v)).length}</div></div>
+    <div class="metric"><label>Morosos tarde</label><div class="metric-val">${ALUMNOS.filter(a=>a.t==='tarde'&&a.p.slice(0,MA).some((v,i)=>i>=a.mi&&!v)).length}</div></div>
+  </div>
+  <div class="card"><div class="card-title">Alumnos con saldo pendiente</div>
+    <table><thead><tr><th style="width:28%">Alumno</th><th style="width:14%">Grado</th><th style="width:9%">Turno</th><th style="width:22%">Representante</th><th style="width:14%">Teléfono</th><th style="width:8%">USD</th><th style="width:5%">Meses</th></tr></thead>
+    <tbody>${ALUMNOS.filter(a=>a.p.slice(0,MA).some((v,i)=>i>=a.mi&&!v)).map(a=>{
+      const nd=a.p.slice(0,MA).filter((v,i)=>i>=a.mi&&!v).length;
+      return`<tr><td>${a.n}</td><td>${a.g}</td><td><span class="badge ${a.t==='basico'?'bg':'bp'}">${a.t==='basico'?'B':'T'}</span></td><td>${a.r}</td><td>${a.tel}</td><td>$${nd*TAR[a.t]}</td><td><span class="badge ${nd>=3?'br':'ba'}">${nd}m</span></td></tr>`;
+    }).join('')}</tbody></table>
+  </div>
+</div>
+
+<!-- MATRÍCULA DIRECCIÓN -->
+<div id="d-mat" class="page">
+  <p class="page-title">Matrícula completa</p>
+  <div class="metrics">
+    <div class="metric"><label>Total inscritos</label><div class="metric-val">${ALUMNOS.length}</div></div>
+    <div class="metric"><label>Básico $${TAR.basico}</label><div class="metric-val">${ALUMNOS.filter(a=>a.t==='basico').length}</div></div>
+    <div class="metric"><label>Tarde $${TAR.tarde}</label><div class="metric-val">${ALUMNOS.filter(a=>a.t==='tarde').length}</div></div>
+    <div class="metric"><label>Al día</label><div class="metric-val" style="color:#3B6D11">${ALUMNOS.filter(a=>!a.p.slice(0,MA).some((v,i)=>i>=a.mi&&!v)).length}</div></div>
+    <div class="metric"><label>Con deuda</label><div class="metric-val" style="color:#A32D2D">${ALUMNOS.filter(a=>a.p.slice(0,MA).some((v,i)=>i>=a.mi&&!v)).length}</div></div>
+  </div>
+  <div class="card"><div class="card-title">Alumnos — año escolar 2025–2026</div>
+    <table><thead><tr><th style="width:22%">Alumno</th><th style="width:13%">Grado</th><th style="width:7%">Turno</th>${mesesHeader}<th style="width:10%">Estado</th></tr></thead>
+    <tbody>${aluRows}</tbody></table>
+  </div>
+</div>
+
+<!-- RESULTADO -->
+<div id="d-res" class="page">
+  <p class="page-title">Resultado mensual</p><p class="page-sub">Informe ejecutivo imprimible</p>
+  <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+    <select style="font-size:13px;padding:7px 10px;border:1px solid var(--border2);border-radius:var(--r);background:var(--bg)"><option>Abril 2026</option><option>Marzo 2026</option><option>Febrero 2026</option></select>
+    <button class="btn btn-p" onclick="window.print()">Imprimir / PDF</button>
+  </div>
+  <div class="card">
+    <div style="text-align:center;border-bottom:1px solid var(--border);padding-bottom:14px;margin-bottom:14px">
+      <div style="font-size:18px;font-weight:700">U.E. Ntra. Sra. de los Reyes</div>
+      <div style="font-size:14px;color:var(--text2)">Resultado financiero — Abril 2026</div>
+      <div style="font-size:12px;color:var(--text2)">Tasa BCV promedio: Bs. 482/USD</div>
+    </div>
+    <div class="two-col">
+      <div><div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:8px">INGRESOS</div>
+        ${[['Mensualidades básico','Bs. 89.700'],['Mensualidades tarde','Bs. 41.040'],['Inscripciones','Bs. 11.760']].map(([l,v])=>`<div style="display:flex;justify-content:space-between;padding:5px 0;font-size:13px;border-bottom:1px solid var(--border)"><span style="color:var(--text2)">${l}</span><span style="color:#3B6D11;font-weight:600">${v}</span></div>`).join('')}
+        <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:15px;font-weight:700"><span>Total ingresos</span><span style="color:#3B6D11">Bs. 142.500</span></div>
+      </div>
+      <div><div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:8px">EGRESOS</div>
+        ${[['Nómina planta fija','Bs. 45.000'],['Infraestructura','Bs. 18.400'],['Especialistas','Bs. 16.200'],['Impuestos y parafiscales','Bs. 10.800'],['Gastos bancarios','Bs. 6.480'],['Materiales y otros','Bs. 10.600']].map(([l,v])=>`<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px;border-bottom:1px solid var(--border)"><span style="color:var(--text2)">${l}</span><span style="color:#A32D2D">${v}</span></div>`).join('')}
+        <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:15px;font-weight:700;border-top:1px solid var(--border);margin-top:4px"><span>Total egresos</span><span style="color:#A32D2D">Bs. 107.480</span></div>
+      </div>
+    </div>
+    <div style="border-top:2px solid var(--border);padding-top:12px;margin-top:4px;display:flex;justify-content:space-between;font-size:18px;font-weight:700"><span>Balance neto</span><span style="color:#185FA5">Bs. 35.020 — USD 73</span></div>
+    <div style="font-size:12px;color:var(--text2);margin-top:6px">Margen: 24,6% — Nómina total: 57% de ingresos</div>
+  </div>
+</div>
+
+</div></div>`;
+}
+
+// ═══════════════════════════════
+// BUILD SECRETARIA
+// ═══════════════════════════════
+function buildSec(){
+  const provRows = PROVS.map(p=>`<tr style="cursor:pointer" onclick="selProvISLR('${p.n}','${p.r}','${p.t}')"><td>${p.n}</td><td>${p.r}</td><td>${p.t==='0.05'?'Honorarios 5%':p.t==='0.03'?'Servicios 3%':'Servicios 2%'}</td><td><button class="btn btn-sm" onclick="event.stopPropagation();selProvIVA('${p.n}','${p.r}')">IVA</button></td></tr>`).join('');
+
+  return`<div class="app">
+<div class="sidebar">
+  <div class="sb-header"><div class="sb-chip chip-sec">Sec.</div><div class="sb-name">Panel operativo</div><div class="sb-sub">Carga de datos</div></div>
+  <div class="saldo-bar">
+    <div class="saldo-title">Saldo en sistema</div>
+    <div class="saldo-row"><span>Fondo Común</span><span id="saldo-fc">Bs. ${fmt(saldos.fc)}</span></div>
+    <div class="saldo-row"><span>Bancaribe</span><span id="saldo-bc">Bs. ${fmt(saldos.bc)}</span></div>
+    <div class="saldo-row"><span>Provincial</span><span id="saldo-pv">Bs. ${fmt(saldos.pv)}</span></div>
+    <div class="saldo-total"><span>Total</span><span id="saldo-tot">Bs. ${fmt(saldos.fc+saldos.bc+saldos.pv)}</span></div>
+    <div class="ul-reg" id="ul-reg">Último registro: hace 12 min</div>
+  </div>
+  <div class="nav-group"><div class="nav-label">Inicio</div>
+    <div class="nitem ns active" id="ns-ini" onclick="sp('sec','s-ini','ns-ini')">Acceso rápido</div>
+  </div>
+  <div class="nav-group"><div class="nav-label">Registrar</div>
+    <div class="nitem ns" id="ns-cob" onclick="sp('sec','s-cob','ns-cob')">Cobros de padres</div>
+    <div class="nitem ns" id="ns-eg" onclick="sp('sec','s-eg','ns-eg')">Egresos y gastos</div>
+    <div class="nitem ns" id="ns-nom" onclick="sp('sec','s-nom','ns-nom')">Nómina</div>
+    <div class="nitem ns" id="ns-ret" onclick="sp('sec','s-ret','ns-ret')">Retenciones ISLR / IVA</div>
+  </div>
+  <div class="nav-group"><div class="nav-label">Fiscal</div>
+    <div class="nitem ns" id="ns-fisc" onclick="sp('sec','s-fisc','ns-fisc')">Obligaciones fiscales</div>
+    <div class="nitem ns" id="ns-txt" onclick="sp('sec','s-txt','ns-txt')">Ayuda SENIAT</div>
+  </div>
+  <div class="nav-group"><div class="nav-label">Alumnos</div>
+    <div class="nitem ns" id="ns-mat" onclick="sp('sec','s-mat','ns-mat')">Matrícula / pagos</div>
+    <div class="nitem ns" id="ns-ins" onclick="sp('sec','s-ins','ns-ins')">Inscribir alumno</div>
+    <div class="nitem ns" id="ns-eca" onclick="sp('sec','s-eca','ns-eca')">Estado de cuenta</div>
+  </div>
+  <div class="nav-group"><div class="nav-label">Revisión</div>
+    <div class="nitem ns" id="ns-mis" onclick="sp('sec','s-mis','ns-mis')">Mis registros</div>
+    <div class="nitem ns" id="ns-cie" onclick="sp('sec','s-cie','ns-cie')">Cierre de mes</div>
+  </div>
+  <div class="sb-bcv">
+    <label>Tasa BCV hoy (editable)</label>
+    <input id="bcv-input" type="number" value="${BCV}" step="0.01" onchange="updBCV()" style="margin-top:4px">
+  </div>
+  <div class="sb-logout"><button onclick="logout()">Cerrar sesión</button></div>
+</div>
+<div class="main">
+
+<!-- INICIO -->
+<div id="s-ini" class="page active">
+  <p class="page-title">Buenos días</p><p class="page-sub">¿Qué vas a registrar hoy?</p>
+  <div class="quick-grid">
+    <div class="qbtn" onclick="sp('sec','s-cob','ns-cob')" style="border-left:3px solid var(--green)"><span class="qi">$</span><h4>Cobro de padre</h4><p>Mensualidad, inscripción, abono</p></div>
+    <div class="qbtn" onclick="sp('sec','s-eg','ns-eg')" style="border-left:3px solid var(--red)"><span class="qi">-$</span><h4>Egreso / gasto</h4><p>Proveedor, servicio, compra</p></div>
+    <div class="qbtn" onclick="sp('sec','s-nom','ns-nom')" style="border-left:3px solid var(--purple)"><span class="qi">👥</span><h4>Pago de nómina</h4><p>Quincena o especialista</p></div>
+    <div class="qbtn" onclick="sp('sec','s-ret','ns-ret')" style="border-left:3px solid var(--blue)"><span class="qi">%</span><h4>Retención ISLR / IVA</h4><p>Genera comprobante</p></div>
+    <div class="qbtn" onclick="sp('sec','s-fisc','ns-fisc')" style="border-left:3px solid var(--red)"><span class="qi">!</span><h4>Obligaciones fiscales</h4><span class="badge br" style="font-size:11px">3 vencidas</span></div>
+    <div class="qbtn" onclick="sp('sec','s-ins','ns-ins')" style="border-left:3px solid var(--amber)"><span class="qi">+</span><h4>Inscribir alumno</h4><p>Nuevo o reinscripción</p></div>
+  </div>
+  <div class="card"><div class="card-title">Resumen de hoy</div>
+    <div class="metrics" style="margin-bottom:0">
+      <div class="metric"><label>Cobros hoy</label><div class="metric-val">3</div><div class="metric-sub">Bs. 46.617</div></div>
+      <div class="metric"><label>Egresos hoy</label><div class="metric-val">1</div><div class="metric-sub">Bs. 8.200</div></div>
+      <div class="metric"><label>Total bancos</label><div class="metric-val">Bs. ${fmt(saldos.fc+saldos.bc+saldos.pv)}</div></div>
+      <div class="metric"><label>Fiscales vencidos</label><div class="metric-val" style="color:#A32D2D">3</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- COBROS -->
+<div id="s-cob" class="page">
+  <p class="page-title">Registrar cobro</p>
+  <p class="page-sub">Selecciona el grado y el alumno — el sistema muestra los meses pendientes</p>
+  <div class="card">
+    <div id="cob-nota" class="nota-w">Tasa BCV: Bs. ${fmtM(BCV)} / USD</div>
+    
+    <!-- Filtro por grado -->
+    <div style="margin-bottom:12px">
+      <div style="font-size:12px;color:var(--text2);font-weight:500;margin-bottom:8px">Filtrar por grado:</div>
+      <div class="grade-pills" id="grado-pills-cob">
+        ${GRADOS.map(g=>`<div class="grade-pill ${g==='Todos'?'active':''}" onclick="filtrarGrado('${g}','cob')">${g}</div>`).join('')}
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group"><label>Alumno</label>
+        <select id="cob-alu" onchange="loadMeses()">
+          <option value="">-- Seleccionar alumno --</option>
+          ${ALUMNOS.map((a,i)=>`<option value="${i}" data-grado="${a.g}">${a.n} — ${a.g} — ${a.t==='basico'?'Básico':'Tarde'} $${TAR[a.t]}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-group"><label>Concepto adicional</label>
+        <select id="cob-concepto">
+          <option value="">Solo mensualidades</option>
+          <option value="ins">Inscripción ($150)</option>
+          <option value="se">Seguro estudiantil ($30)</option>
+          <option value="ce">Consejo educativo ($20)</option>
+          <option value="ins+se+ce">Inscripción + Seguro + Consejo ($200)</option>
+        </select>
+      </div>
+    </div>
+    
+    <div id="cob-wrap" style="display:none">
+      <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:8px">Toca los meses que paga hoy:</div>
+      <div class="meses-grid" id="cob-grid"></div>
+      <div id="cob-det-wrap" style="display:none;margin-top:10px">
+        <div style="font-size:13px;font-weight:600;margin-bottom:8px">¿Cuánto abona por cada mes?</div>
+        <div id="cob-det"></div>
+      </div>
+      <div class="res-pago" id="cob-res">
+        <div style="font-size:13px;font-weight:700;color:var(--pd);margin-bottom:8px">Resumen del cobro</div>
+        <div id="cob-res-filas"></div>
+        <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:700;padding:8px 0 0;border-top:1px solid #AFA9EC;margin-top:6px;color:var(--pd)"><span>Total a recibir</span><span id="cob-total">--</span></div>
+        <div style="font-size:12px;color:var(--purple);margin-top:3px" id="cob-usd"></div>
+      </div>
+    </div>
+
+    <div class="form-row" style="margin-top:10px">
+      <div class="form-group"><label>Tasa BCV del día del cobro</label>
+        <input type="number" id="cob-tasa-input" step="0.01" style="font-weight:700;color:var(--bd)" oninput="updTasaCobro(this.value)">
+      </div>
+      <div class="form-group"><label>Fecha del cobro</label><input type="date" id="cob-fecha" onchange="updTasaPorFecha(this.value)"></div>
+    </div>
+    <div class="nota-b" id="cob-tasa-nota" style="margin-bottom:10px;font-size:12px">Tasa del día actual: Bs. <strong id="cob-tasa-lbl">517.96</strong> — Si el cobro fue en otro día, cambia la fecha y ajusta la tasa manualmente.</div>
+    <div class="form-row" style="margin-top:0px">
+      <div class="form-group"><label>Método de pago</label>
+        <select id="cob-metodo">
+          <option>Transferencia en Bs.</option>
+          <option>Pago móvil</option>
+          <option>Efectivo en Bs.</option>
+          <option>Dólares efectivo</option>
+          <option>Zelle</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Banco acreditado</label>
+        <select id="cob-banco"><option>Fondo Común</option><option>Bancaribe</option><option>Provincial</option><option>Efectivo</option></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>N. referencia</label><input type="text" id="cob-ref" placeholder="Ej: 00234567"></div>
+      </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-g" onclick="regCobro()">Confirmar y registrar cobro</button>
+      <button class="btn" onclick="genWA()">📱 Generar WhatsApp</button>
+    </div>
+  </div>
+</div>
+
+<!-- EGRESOS -->
+<div id="s-eg" class="page">
+  <p class="page-title">Registrar egreso</p><p class="page-sub">Gastos y pagos a proveedores</p>
+  <div class="card">
+    <div class="form-row">
+      <div class="form-group"><label>Partida contable (escribe para buscar)</label>
+        <div class="ac-wrap">
+          <input type="text" id="eg-partida-input" placeholder="Ej: Corpoelec, nómina, IVSS..." oninput="acPartida()" onblur="setTimeout(()=>{const d=document.getElementById('eg-partida-drop');if(d)d.style.display='none'},200)" autocomplete="off">
+          <div class="ac-drop" id="eg-partida-drop"></div>
+        </div>
+      </div>
+      <div class="form-group"><label>Proveedor / Beneficiario</label><input type="text" id="eg-prov" placeholder="Nombre o empresa"></div>
+    </div>
+    <div id="eg-ret-hint" style="display:none;margin-bottom:10px"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Monto (Bs.)</label><input type="number" id="eg-monto" placeholder="0.00" oninput="calcEgUSD()"></div>
+      <div class="form-group"><label>Equivalente USD (referencia)</label><input type="text" id="eg-usd" readonly style="background:var(--bg2);color:var(--text2)"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>N. factura</label><input type="text" id="eg-fac" placeholder="FAC-0001"></div>
+      <div class="form-group"><label>Fecha</label><input type="date" id="eg-fecha"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Banco debitado</label>
+        <select id="eg-banco"><option>Fondo Común</option><option>Bancaribe</option><option>Provincial</option><option>Efectivo</option></select>
+      </div>
+      <div class="form-group"><label>Método de pago</label>
+        <select><option>Transferencia en Bs.</option><option>Pago móvil</option><option>Efectivo en Bs.</option><option>Dólares efectivo</option><option>Cheque</option></select>
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom:14px"><label>¿Genera retención ISLR?</label><select id="eg-ret-sel"><option value="">No aplica</option><option value="2">Sí — 2% servicios</option><option value="3">Sí — 3% fletes</option><option value="5">Sí — 5% honorarios</option></select></div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <button class="btn btn-g" onclick="regEgreso()">Registrar egreso</button>
+      <button class="btn btn-sm" onclick="openModal('modal-partida')">+ Agregar nueva partida</button>
+    </div>
+  </div>
+</div>
+
+<!-- NÓMINA -->
+<div id="s-nom" class="page">
+  <p class="page-title">Nómina y especialistas</p><p class="page-sub">Registrar pago de quincena o de especialista</p>
+  <div class="nom-notif" id="nom-notif-box">
+    <span style="font-size:18px">⚠️</span>
+    <div><div style="font-weight:700;margin-bottom:3px">Cambio en nómina</div><div id="nom-notif-txt"></div></div>
+  </div>
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('nt-q',this)">Quincena planta fija</button>
+    <button class="tab" onclick="showTab('nt-e',this)">Pago especialista</button>
+    <button class="tab" onclick="showTab('nt-empleados',this)">Empleados</button>
+  </div>
+  <div id="nt-q" class="subtab active">
+    <div class="card">
+      <div class="form-row">
+        <div class="form-group"><label>Quincena</label>
+          <select id="nom-q">
+            <option>1ra quincena Mayo 2026 (1–15)</option>
+            <option>2da quincena Mayo 2026 (16–31)</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Tasa BCV del día</label>
+          <input type="number" id="nom-tasa" value="${BCV}" oninput="calcNom()">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Banco de pago</label><select id="nom-banco"><option>Fondo Común</option><option>Bancaribe</option><option>Provincial</option></select></div>
+        <div class="form-group"><label>Fecha de pago</label><input type="date" id="nom-fecha"></div>
+      </div>
+      <div id="nom-resumen" style="background:var(--bg2);border-radius:var(--r);padding:12px;margin-bottom:14px;font-size:13px">
+        <div style="font-weight:700;margin-bottom:6px">Resumen — 17 empleados activos</div>
+        <div id="nom-vals"></div>
+      </div>
+      <button class="btn btn-g" onclick="regNomina()">Confirmar pago de quincena</button>
+    </div>
+  </div>
+  <div id="nt-e" class="subtab">
+    <div class="card">
+      <div class="form-row">
+        <div class="form-group"><label>Especialista</label>
+          <select id="esp-sel" onchange="calcEsp()">
+            <option value="">-- Seleccionar --</option>
+            <option value="4.5">Jesús Nuñez — Música ($4,50/h)</option>
+            <option value="4.0">Richard Guillén — Computación ($4,00/h)</option>
+            <option value="3.0">Salomé Jiménez — Inglés ($3,00/h)</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Horas trabajadas</label><input type="number" id="esp-h" placeholder="20" oninput="calcEsp()"></div>
+      </div>
+      <div id="esp-prev" style="display:none;background:var(--pl);border:1px solid #AFA9EC;border-radius:var(--r);padding:12px;margin-bottom:12px">
+        <div style="font-size:12px;color:var(--pd);font-weight:600;margin-bottom:6px">Cálculo automático — retención ISLR 5%</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;font-size:13px" id="esp-vals"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Fecha</label><input type="date" id="esp-fecha"></div>
+        <div class="form-group"><label>Banco</label><select><option>Fondo Común</option><option>Bancaribe</option><option>Provincial</option><option>Efectivo</option></select></div>
+      </div>
+      <button class="btn btn-g">Registrar pago y generar retención</button>
+    </div>
+  </div>
+  <div id="nt-empleados" class="subtab">
+    <div class="card">
+      <div class="card-title">Empleados activos — ${EMPLEADOS.length} personas
+        <button class="btn btn-sm btn-p" onclick="addEmpleado()">+ Agregar</button>
+      </div>
+      <table><thead><tr><th style="width:5%">N°</th><th style="width:28%">Nombre</th><th style="width:9%">C.I.</th><th style="width:18%">Cargo</th><th style="width:16%">Sueldo mensual</th><th style="width:12%">Préstamo</th><th style="width:12%"></th></tr></thead>
+      <tbody id="emp-tbody">${EMPLEADOS.map((e,i)=>`<tr><td>${i+1}</td><td>${e.n}</td><td>${e.ci}</td><td>${e.cargo}</td><td>Bs. ${fmt(e.sueldo)}</td><td>${e.prestSaldo?'<span class="badge ba">Bs.'+fmt(e.prestSaldo)+'</span>':'—'}</td><td><button class="btn btn-sm" onclick="editEmp(${i})">Editar</button></td></tr>`).join('')}</tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- RETENCIONES -->
+<div id="s-ret" class="page">
+  <p class="page-title">Retenciones ISLR / IVA</p>
+  <p class="page-sub">Genera comprobantes con formato legal venezolano</p>
+  <div class="tabs">
+    <button class="tab comp-tab active" onclick="switchComp('islr')">Retención ISLR (F-99074)</button>
+    <button class="tab comp-tab" onclick="switchComp('iva')">Retención IVA (F-99035)</button>
+    <button class="tab comp-tab" onclick="switchComp('provs')">Proveedores</button>
+  </div>
+
+  <div id="cp-islr" class="comp-panel active">
+    <div class="card">
+      <div class="form-row">
+        <div class="form-group"><label>Beneficiario (escribe para buscar)</label>
+          <div class="ac-wrap">
+            <input type="text" id="islr-prov" placeholder="Nombre o RIF..." oninput="acISLR()" onblur="setTimeout(()=>{const d=document.getElementById('islr-drop');if(d)d.style.display='none'},200)" autocomplete="off">
+            <div class="ac-drop" id="islr-drop"></div>
+          </div>
+        </div>
+        <div class="form-group"><label>RIF del beneficiario</label><input type="text" id="islr-rif" placeholder="J-00000000-0"></div>
+      </div>
+      <div class="form-group" style="margin-bottom:12px"><label>Dirección fiscal del beneficiario</label><textarea id="islr-dir" rows="2" placeholder="Dirección fiscal..."></textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label>N. Comprobante</label><input type="text" id="islr-num" placeholder="20260500001"></div>
+        <div class="form-group"><label>Fecha</label><input type="date" id="islr-fecha"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Porcentaje de Retención</label>
+          <select id="islr-pct" onchange="document.getElementById('islr-other-wrap').style.display=this.value==='other'?'flex':'none'">
+            <option value="2">2% — Servicios en general</option>
+            <option value="3">3% — Fletes y transporte</option>
+            <option value="5" selected>5% — Honorarios profesionales</option>
+            <option value="10">10% — Arrendamiento bienes muebles</option>
+            <option value="other">Otro...</option>
+          </select>
+        </div>
+        <div class="form-group" id="islr-other-wrap" style="display:none"><label>% personalizado</label><input type="number" id="islr-pct-other" placeholder="ej. 7.5"></div>
+      </div>
+      <div style="margin-bottom:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <div style="font-size:13px;font-weight:600">Facturas</div>
+          <button class="btn btn-sm" onclick="addIslrOp()">+ Agregar factura</button>
+        </div>
+        <div id="islr-ops-wrap"></div>
+      </div>
+      <button class="btn btn-g" onclick="renderISLR()">Generar comprobante</button>
+    </div>
+    <div id="islr-prev" style="display:none;margin-top:14px">
+      <div style="display:flex;gap:10px;margin-bottom:12px">
+        <button class="btn btn-p" onclick="window.print()">Imprimir / PDF</button>
+        <button class="btn btn-sm" onclick="document.getElementById('islr-prev').style.display='none'">Cerrar</button>
+      </div>
+      <div id="islr-doc"></div>
+    </div>
+  </div>
+
+  <div id="cp-iva" class="comp-panel" style="display:none">
+    <div class="card">
+      <div class="form-row">
+        <div class="form-group"><label>Proveedor retenido (escribe para buscar)</label>
+          <div class="ac-wrap">
+            <input type="text" id="iva-prov" placeholder="Nombre o RIF..." oninput="acIVA()" onblur="setTimeout(()=>{const d=document.getElementById('iva-drop');if(d)d.style.display='none'},200)" autocomplete="off">
+            <div class="ac-drop" id="iva-drop"></div>
+          </div>
+        </div>
+        <div class="form-group"><label>RIF del proveedor</label><input type="text" id="iva-rif" placeholder="J-00000000-0"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>N. Comprobante</label><input type="text" id="iva-num" placeholder="20260500001"></div>
+        <div class="form-group"><label>Fecha</label><input type="date" id="iva-fecha"></div>
+      </div>
+      <div style="margin-bottom:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <div style="font-size:13px;font-weight:600">Facturas</div>
+          <button class="btn btn-sm" onclick="addIvaOp()">+ Agregar factura</button>
+        </div>
+        <div id="iva-ops-wrap"></div>
+      </div>
+      <button class="btn btn-g" onclick="renderIVA()">Generar comprobante IVA</button>
+    </div>
+    <div id="iva-prev" style="display:none;margin-top:14px">
+      <div style="display:flex;gap:10px;margin-bottom:12px">
+        <button class="btn btn-p" onclick="window.print()">Imprimir / PDF</button>
+        <button class="btn btn-sm" onclick="document.getElementById('iva-prev').style.display='none'">Cerrar</button>
+      </div>
+      <div id="iva-doc"></div>
+    </div>
+  </div>
+
+  <div id="cp-provs" class="comp-panel" style="display:none">
+    <div class="card">
+      <div class="card-title">Proveedores registrados</div>
+      <table><thead><tr><th>Proveedor</th><th>RIF</th><th>Retención</th><th>Acción</th></tr></thead>
+      <tbody>${provRows}</tbody></table>
+    </div>
+  </div>
+</div>
+
+<!-- FISCAL SECRETARIA -->
+<div id="s-fisc" class="page">
+  <p class="page-title">Obligaciones fiscales</p><p class="page-sub">RIF terminal 4 — Marca cada pago cuando lo realices</p>
+  <div id="fisc-sec"></div>
+</div>
+
+<!-- AYUDA SENIAT / TXT -->
+<div id="s-txt" class="page">
+  <p class="page-title">Ayuda SENIAT</p><p class="page-sub">Datos del sistema listos para copiar y pegar en el portal SENIAT</p>
+  <div class="nota-b">Estos datos se completan automáticamente con la información del colegio. Toca "Copiar" y pégalos en el formulario del SENIAT.</div>
+
+  <div class="card">
+    <div class="card-title">Datos del agente de retención</div>
+    <div style="font-size:13px;margin-bottom:10px">Usa estos datos en cualquier declaración o formulario SENIAT.</div>
+    <div style="position:relative"><div class="copy-box" id="txt-agente">Nombre/Razón Social: UNIDAD EDUCATIVA P. NUESTRA SEÑORA DE LOS REYES
+RIF (IVA): J-30844091-4
+RIF (ISLR): J-30473183-3
+Dirección: Calle La Ermita, Qta. Nuestra Querencia,
+           Urb. La Gonzalera, San Antonio de los Altos,
+           Municipio Los Salias, Estado Miranda
+Responsable: Zoraida Arteaga — C.I. 9.485.199</div>
+    <button class="btn btn-sm copy-btn-abs" onclick="copiar('txt-agente')">Copiar</button></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Retención IVA — F-99035 (quincenal)</div>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:10px">Vence ~5 días hábiles después de cada quincena. Terminal 4.</div>
+    <button class="btn btn-g" style="margin-bottom:10px" onclick="abrirSENIAT('https://declaraciones.seniat.gob.ve')">🌐 Ir al portal SENIAT</button>
+    <div style="position:relative"><div class="copy-box" id="txt-iva">RETENCIÓN IVA — F-99035
+Agente: J-30844091-4 (UNIDAD EDUCATIVA P. NUESTRA SEÑORA DE LOS REYES)
+Período: 1ra quincena Mayo 2026 (01/05/2026 – 15/05/2026)
+Alícuota: 16% — Retención: 75% del IVA
+Fecha límite: 20/05/2026
+
+[Completar con las facturas del período en el portal]</div>
+    <button class="btn btn-sm copy-btn-abs" onclick="copiar('txt-iva')">Copiar</button></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Retención ISLR — F-99074 (mensual)</div>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:10px">Vence primeros 5 días hábiles del mes siguiente. Terminal 4.</div>
+    <button class="btn btn-g" style="margin-bottom:10px" onclick="abrirSENIAT('https://declaraciones.seniat.gob.ve')">🌐 Ir al portal SENIAT</button>
+    <div style="position:relative"><div class="copy-box" id="txt-islr">RETENCIÓN ISLR — F-99074
+Agente: J-30473183-3 (UNIDAD EDUCATIVA P. NUESTRA SEÑORA DE LOS REYES)
+Período: Abril 2026
+Fecha límite: 07/05/2026
+
+Retenciones del período:
+— Honorarios profesionales (5%): [monto según comprobantes]
+— Servicios en general (2%): [monto según comprobantes]
+
+[Completar en el portal con los comprobantes generados]</div>
+    <button class="btn btn-sm copy-btn-abs" onclick="copiar('txt-islr')">Copiar</button></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">IVSS — Cotizaciones patronales</div>
+    <button class="btn btn-g" style="margin-bottom:10px" onclick="abrirSENIAT('https://www.ivss.gob.ve')">🌐 Ir al portal IVSS</button>
+    <div style="position:relative"><div class="copy-box" id="txt-ivss">IVSS — COTIZACIONES PATRONALES
+RIF patronal: J-30473183-3
+Razón social: UNIDAD EDUCATIVA P. NUESTRA SEÑORA DE LOS REYES
+Período: Mayo 2026
+Nómina: 17 trabajadores activos
+Salario total mensual: Bs. ~163.348
+
+Patronal 9% + Empleado 2.7% + LPH 0.65%</div>
+    <button class="btn btn-sm copy-btn-abs" onclick="copiar('txt-ivss')">Copiar</button></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">BANAVIH / FAOV</div>
+    <button class="btn btn-g" style="margin-bottom:10px" onclick="abrirSENIAT('https://www.banavih.gob.ve')">🌐 Ir al portal BANAVIH</button>
+    <div style="position:relative"><div class="copy-box" id="txt-banavih">BANAVIH / FAOV
+RIF: J-30473183-3
+Empresa: UNIDAD EDUCATIVA P. NUESTRA SEÑORA DE LOS REYES
+Período: Mayo 2026
+Aporte mensual: 3% salario (1% empleado + 2% patronal)</div>
+    <button class="btn btn-sm copy-btn-abs" onclick="copiar('txt-banavih')">Copiar</button></div>
+  </div>
+</div>
+
+<!-- MATRÍCULA SECRETARIA -->
+<div id="s-mat" class="page">
+  <p class="page-title">Matrícula / pagos</p><p class="page-sub">Turno básico $${TAR.basico} / tarde $${TAR.tarde}</p>
+  <div class="metrics">
+    <div class="metric"><label>Total inscritos</label><div class="metric-val">${ALUMNOS.length}</div></div>
+    <div class="metric"><label>Básico $${TAR.basico}</label><div class="metric-val">${ALUMNOS.filter(a=>a.t==='basico').length}</div></div>
+    <div class="metric"><label>Tarde $${TAR.tarde}</label><div class="metric-val">${ALUMNOS.filter(a=>a.t==='tarde').length}</div></div>
+    <div class="metric"><label>Al día</label><div class="metric-val" style="color:#3B6D11">${ALUMNOS.filter(a=>!a.p.slice(0,MA).some((v,i)=>i>=a.mi&&!v)).length}</div></div>
+    <div class="metric"><label>Con deuda</label><div class="metric-val" style="color:#A32D2D">${ALUMNOS.filter(a=>a.p.slice(0,MA).some((v,i)=>i>=a.mi&&!v)).length}</div></div>
+  </div>
+  
+  <!-- Filtro por grado -->
+  <div class="grade-pills" id="grado-pills-mat">
+    ${GRADOS.map(g=>`<div class="grade-pill ${g==='Todos'?'active':''}" onclick="filtrarGrado('${g}','mat')">${g}</div>`).join('')}
+  </div>
+
+  <div class="card"><div class="card-title" id="mat-titulo">Alumnos — año escolar 2025–2026</div>
+    <table><thead><tr><th style="width:22%">Alumno</th><th style="width:14%">Grado</th><th style="width:7%">Turno</th>
+    ${ML.slice(0,MA).map(m=>`<th style="width:6%">${m}</th>`).join('')}
+    <th style="width:11%">Estado</th><th style="width:7%"></th></tr></thead>
+    <tbody id="mat-tbody">
+    ${ALUMNOS.map((a,idx)=>{
+      const d=a.p.slice(0,MA).filter((v,i)=>i>=a.mi&&!v).length;
+      return`<tr data-grado="${a.g}"><td>${a.n}</td><td>${a.g}</td><td><span class="badge ${a.t==='basico'?'bg':'bp'}">${a.t==='basico'?'B':'T'}</span></td>${a.p.slice(0,MA).map((v,i)=>`<td><span class="sem ${i<a.mi?'sa':v?'sv':'sr'}"></span></td>`).join('')}<td>${d===0?'<span class="badge bg">Al día</span>':`<span class="badge ${d>=3?'br':'ba'}">${d}m</span>`}</td><td><button class="btn btn-sm btn-p" onclick="cobrarDesdeMatricula(${idx})">Cobrar</button></td></tr>`;
+    }).join('')}
+    </tbody></table>
+  </div>
+</div>
+
+<!-- INSCRIBIR -->
+<div id="s-ins" class="page">
+  <p class="page-title">Inscribir alumno</p><p class="page-sub">Nuevo ingreso o reinscripción</p>
+  <div class="card">
+    <div class="form-row">
+      <div class="form-group"><label>Nombre del alumno</label><input type="text" placeholder="Nombre completo"></div>
+      <div class="form-group"><label>Grado</label>
+        <select>
+          <option>Preescolar A</option><option>Preescolar B</option>
+          <option>1er Grado</option><option>2do Grado</option><option>3er Grado</option>
+          <option>4to Grado</option><option>5to Grado</option><option>6to Grado</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Tipo</label><select id="ins-tipo" onchange="calcIns()"><option value="nuevo">Nuevo ingreso</option><option value="reinscrito">Reinscripción</option></select></div>
+      <div class="form-group"><label>Mes de ingreso</label>
+        <select id="ins-mes" onchange="calcIns()">
+          ${MF.map((m,i)=>`<option value="${i}"${i===MA?' selected':''}>${m}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Representante</label><input type="text" placeholder="Nombre completo"></div>
+      <div class="form-group"><label>Teléfono</label><input type="text" placeholder="04XX-XXXXXXX"></div>
+    </div>
+    <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:8px">Selecciona el turno:</div>
+    <div class="turno-sel">
+      <div class="turno-btn" id="ins-b" onclick="selTurno('basico')"><h4>Turno básico</h4><p>$${TAR.basico}/mes — mañana</p></div>
+      <div class="turno-btn" id="ins-t" onclick="selTurno('tarde')"><h4>Turno tarde</h4><p>$${TAR.tarde}/mes — tarde</p></div>
+    </div>
+
+    <!-- Monto en USD editable con cálculo a BCV -->
+    <div id="ins-usd-editor" style="display:none;margin-bottom:12px">
+      <div style="font-size:13px;font-weight:600;margin-bottom:8px;color:var(--purple)">Ajuste de monto (si aplica)</div>
+      <div class="form-row">
+        <div class="form-group"><label>Monto en USD (editable)</label><input type="number" id="ins-usd-val" placeholder="150" oninput="calcInsBCV()"></div>
+        <div class="form-group"><label>Equivalente en Bs. (BCV ${BCV})</label><input type="text" id="ins-bs-calc" readonly style="background:var(--bg2)"></div>
+      </div>
+    </div>
+
+    <div class="ins-prev" id="ins-prev">
+      <div style="font-size:13px;font-weight:700;color:var(--pd);margin-bottom:8px">Cobro inicial:</div>
+      <div id="ins-filas"></div>
+      <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:700;padding:8px 0 0;border-top:1px solid #AFA9EC;margin-top:6px;color:var(--pd)"><span>Total hoy</span><span id="ins-total">--</span></div>
+      <div style="font-size:12px;color:var(--purple);margin-top:3px" id="ins-bs"></div>
+    </div>
+    <button class="btn btn-g" style="margin-top:6px">Inscribir alumno</button>
+  </div>
+</div>
+
+<!-- ESTADO DE CUENTA -->
+<div id="s-eca" class="page">
+  <p class="page-title">Estado de cuenta por alumno</p>
+  <div class="card">
+    <!-- Filtro por grado -->
+    <div class="grade-pills" id="grado-pills-eca">
+      ${GRADOS.map(g=>`<div class="grade-pill ${g==='Todos'?'active':''}" onclick="filtrarGrado('${g}','eca')">${g}</div>`).join('')}
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Alumno</label>
+        <select id="eca-alu" onchange="genECA()">
+          <option value="">-- Seleccionar alumno --</option>
+          ${ALUMNOS.map((a,i)=>`<option value="${i}" data-grado="${a.g}">${a.n} — ${a.g}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-group"><label>Período</label><select><option>Año escolar 2025–2026 completo</option><option>Últimos 3 meses</option></select></div>
+    </div>
+  </div>
+  <div id="eca-res" style="display:none">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+        <div><div style="font-size:16px;font-weight:700" id="eca-nom">--</div><div style="font-size:13px;color:var(--text2);margin-top:3px" id="eca-meta">--</div></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-g btn-sm" onclick="window.print()">Imprimir</button>
+          <button class="btn btn-sm" onclick="genWAECA()">📱 WhatsApp</button>
+        </div>
+      </div>
+      <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:8px">Estado de pagos — año escolar 2025–2026</div>
+      <div id="eca-grid" class="meses-grid"></div>
+      <div id="eca-sum" style="margin-top:14px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MIS REGISTROS -->
+<div id="s-mis" class="page">
+  <p class="page-title">Mis registros del mes</p><p class="page-sub">Mayo 2026 — toca el lápiz para corregir</p>
+  <div class="card">
+    <table><thead><tr><th style="width:10%">Fecha</th><th style="width:30%">Descripción</th><th style="width:17%">Partida</th><th style="width:12%">Banco</th><th style="width:14%">Monto Bs.</th><th style="width:9%">Tipo</th><th style="width:8%"></th></tr></thead>
+    <tbody id="mis-tbody"></tbody></table>
+    <div style="font-size:12px;color:var(--text2);margin-top:10px">Los cambios quedan registrados con fecha, hora y motivo de corrección.</div>
+  </div>
+</div>
+
+<!-- CIERRE DE MES -->
+<div id="s-cie" class="page">
+  <p class="page-title">Cierre de mes</p><p class="page-sub">Verifica que todo esté completo antes de cerrar mayo 2026</p>
+  <div class="card">
+    <div class="card-title">Lista de verificación</div>
+    <div id="cierre-lista"></div>
+    <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
+      <div style="font-size:14px;font-weight:700;margin-bottom:12px">Comparativo saldos bancarios</div>
+      <div class="three-col">
+        <div style="background:var(--bg2);border-radius:var(--r);padding:12px"><div style="font-size:11px;color:var(--text2);margin-bottom:3px;font-weight:600">FONDO COMÚN</div><div style="font-weight:700">Sistema: Bs. ${fmt(saldos.fc)}</div><div style="color:var(--text2)">Banco: — (subir PDF)</div></div>
+        <div style="background:var(--rl);border-radius:var(--r);padding:12px;border:1px solid #F09595"><div style="font-size:11px;color:#A32D2D;margin-bottom:3px;font-weight:600">BANCARIBE</div><div style="font-weight:700">Sistema: Bs. ${fmt(saldos.bc)}</div><div style="color:#A32D2D">Banco: Bs. 22.400</div><div style="font-size:12px;color:#A32D2D;font-weight:700">Diferencia: −Bs. 1.700</div></div>
+        <div style="background:var(--bg2);border-radius:var(--r);padding:12px"><div style="font-size:11px;color:var(--text2);margin-bottom:3px;font-weight:600">PROVINCIAL</div><div style="font-weight:700">Sistema: Bs. ${fmt(saldos.pv)}</div><div style="color:var(--text2)">Banco: — (subir PDF)</div></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+      <button class="btn btn-p">Cerrar mes</button>
+      <button class="btn">Reporte para contador</button>
+    </div>
+  </div>
+</div>
+
+</div></div>`;
+}
+
+// ═══════════════════════════════
+// LÓGICA DIRECCIÓN
+// ═══════════════════════════════
+function initCharts(){
+  const gc='rgba(0,0,0,0.05)',tc='#aaa';
+  const cv1=document.getElementById('ch1');
+  if(cv1&&!cv1._c)cv1._c=new Chart(cv1,{type:'bar',data:{labels:['Ene','Feb','Mar','Abr'],datasets:[{label:'Ingresos',data:[3007220,3719200,256080,142500],backgroundColor:'#639922',borderWidth:0},{label:'Egresos',data:[6244312,8471603,0,107480],backgroundColor:'#E24B4A',borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:12}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:11},callback:v=>v>=1000000?(v/1000000).toFixed(1)+'M':'Bs.'+(v/1000).toFixed(0)+'k'}}}}});
+  const cv2=document.getElementById('ch2');
+  if(cv2&&!cv2._c)cv2._c=new Chart(cv2,{type:'bar',data:{labels:['Sep','Oct','Nov','Dic','Ene','Feb','Mar','Abr'],datasets:[{label:'Ingresos',data:[584237,96213,1956367,2716480,3007220,3719200,256080,142500],backgroundColor:'#639922',borderWidth:0},{label:'Egresos',data:[411864,201580,2289513,7090160,6244312,8471603,0,107480],backgroundColor:'#E24B4A',borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:11}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10},callback:v=>v>=1000000?(v/1000000).toFixed(1)+'M':'Bs.'+(v/1000).toFixed(0)+'k'}}}}});
+  // Fisc dash
+  renderFiscDash();
+}
+function renderFiscDash(){
+  const c=document.getElementById('fisc-dash');if(!c)return;
+  const pag=OBLIG.filter(o=>fiscPag[o.id]).length;
+  const e1=document.getElementById('fd-p'),e2=document.getElementById('fd-pe'),e3=document.getElementById('fd-v');
+  if(e1)e1.textContent=pag;if(e2)e2.textContent=OBLIG.length-pag;if(e3)e3.textContent=OBLIG.filter(o=>!fiscPag[o.id]&&o.d<0).length;
+  c.innerHTML=OBLIG.slice(0,4).map(ob=>{const{dc,ds,bc}=fiscData(ob);
+    return`<div class="fi"><div class="fi-dot ${dc}"></div><div class="fi-info"><div class="fi-nom">${ob.n}</div><div class="fi-fec">Vence: ${ob.v} — ${ob.m}</div></div><span class="badge ${bc}">${fiscPag[ob.id]?'Pagado':ob.d<0?'Vencido':ob.d<=7?'Próximo':'Ok'}</span></div>`;
+  }).join('');
+}
+function cambiarMes(dir){mesActual=Math.max(0,Math.min(8,mesActual+dir));renderMes();}
+function renderMes(){
+  const d=MD[mesActual];if(!d)return;
+  document.getElementById('mes-lbl').textContent=d.lbl;
+  const b=document.getElementById('mes-badge');b.textContent=mesActual===8?'Mes actual':'Histórico';b.className='badge '+(mesActual===8?'bb':'bgr');
+  document.getElementById('mes-ing').textContent='Bs. '+fmt(d.ing);
+  document.getElementById('mes-eg').textContent='Bs. '+fmt(d.eg);
+  const bal=d.ing-d.eg;const bl=document.getElementById('mes-bal');bl.textContent='Bs. '+fmt(bal);bl.style.color=bal>=0?'#185FA5':'#A32D2D';
+  document.getElementById('mes-ni').textContent=d.inc.length;
+  document.getElementById('inc-badge').textContent=d.inc.length+' este mes';document.getElementById('inc-badge').className='badge '+(d.inc.length>0?'br':'bg');
+  renderIncon(d);renderMov(d,'');
+}
+function renderIncon(d){
+  const c=document.getElementById('inc-lista');
+  if(!d.inc.length){c.innerHTML='<div style="font-size:14px;color:var(--text2);padding:12px 0">Sin incongruencias este mes.</div>';return;}
+  c.innerHTML=d.inc.map(ic=>`<div class="incon" onclick="irAMov(${ic.mi})"><div style="flex:1"><div class="incon-tipo">${ic.tipo===1?'Tipo 1 — Banco vs sistema':'Tipo 2 — Partida interna'}</div><div class="incon-desc">${ic.desc}</div><div style="font-size:12px;color:#A32D2D;margin-top:4px">Toca para ver el movimiento exacto</div></div><div class="incon-monto">${ic.monto}</div></div>`).join('');
+}
+function irAMov(idx){
+  document.getElementById('mov-filt').value='';filtMov();
+  setTimeout(()=>{const rows=document.querySelectorAll('#mov-tbody tr');if(rows[idx]){rows[idx].scrollIntoView({behavior:'smooth',block:'center'});rows[idx].style.outline='3px solid #E24B4A';rows[idx].style.outlineOffset='2px';setTimeout(()=>{rows[idx].style.outline='';rows[idx].style.outlineOffset='';},3000);}},100);
+}
+function renderMov(d,filt){
+  const tb=document.getElementById('mov-tbody');
+  let movs=d.mov;
+  if(filt==='ing')movs=movs.filter(m=>m.t==='ing');
+  else if(filt==='eg')movs=movs.filter(m=>m.t==='eg');
+  else if(filt==='inc')movs=movs.filter(m=>m.i);
+  if(!movs.length){tb.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--text2);padding:20px">Sin movimientos para este filtro.</td></tr>';return;}
+  tb.innerHTML=movs.map(m=>{
+    const ms=m.m>0?`<span style="color:#3B6D11;font-weight:600">+${fmt(m.m)}</span>`:`<span style="color:#A32D2D">${fmt(m.m)}</span>`;
+    return`<tr class="${m.i?'mov-inc':''}"><td>${m.f}</td><td title="${m.d}">${m.d}</td><td style="font-size:11px">${m.p}</td><td>${m.b}</td><td>${ms}</td><td style="color:var(--text2)">$${Math.round(Math.abs(m.m)/BCV)}</td><td>${m.i?'<span class="badge ba">Revisar</span>':m.t==='ing'?'<span class="badge bg">Ingreso</span>':'<span class="badge bgr">Egreso</span>'}</td></tr>`;
+  }).join('');
+}
+function filtMov(){renderMov(MD[mesActual],document.getElementById('mov-filt').value);}
+function fiscData(ob){
+  const pg=fiscPag[ob.id];
+  if(pg)return{dc:'fv',ds:'Pagado',dcs:'fd-ok',bc:'bg'};
+  if(ob.d<0)return{dc:'fr',ds:'Vencido hace '+Math.abs(ob.d)+' días',dcs:'fd-urg',bc:'br'};
+  if(ob.d<=7)return{dc:'fn',ds:'Vence en '+ob.d+' días',dcs:'fd-pr',bc:'ba'};
+  return{dc:'fv',ds:'Vence en '+ob.d+' días',dcs:'fd-ok',bc:'bgr'};
+}
+function renderFiscDir(){
+  const c=document.getElementById('fisc-dir');if(!c)return;
+  c.innerHTML=OBLIG.map(ob=>{const{dc,ds,dcs,bc}=fiscData(ob);
+    return`<div class="fi"><div class="fi-dot ${dc}"></div><div class="fi-info"><div class="fi-nom">${ob.n}</div><div class="fi-fec">Vence: ${ob.v} — ${ob.m} — ${ob.per}</div></div><div class="fi-dias ${dcs}" style="margin-right:10px">${ds}</div><span class="badge ${bc}">${fiscPag[ob.id]?'Pagado':ob.d<0?'Vencido':ob.d<=7?'Próximo':'Ok'}</span></div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════
+// LÓGICA SECRETARIA — SALDOS
+// ═══════════════════════════════
+function updSaldo(){
+  const f=document.getElementById('saldo-fc'),b=document.getElementById('saldo-bc'),p=document.getElementById('saldo-pv'),t=document.getElementById('saldo-tot'),u=document.getElementById('ul-reg');
+  if(f)f.textContent='Bs. '+fmt(saldos.fc);if(b)b.textContent='Bs. '+fmt(saldos.bc);if(p)p.textContent='Bs. '+fmt(saldos.pv);
+  if(t)t.textContent='Bs. '+fmt(saldos.fc+saldos.bc+saldos.pv);
+  const now=new Date();if(u)u.textContent='Último registro: '+now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
+}
+function updBanco(banco,monto){
+  if(banco==='Fondo Común')saldos.fc=Math.max(0,saldos.fc+monto);
+  else if(banco==='Bancaribe')saldos.bc=Math.max(0,saldos.bc+monto);
+  else if(banco==='Provincial')saldos.pv=Math.max(0,saldos.pv+monto);
+  updSaldo();
+}
+
+// ═══════════════════════════════
+// COBROS
+// ═══════════════════════════════
+function filtrarGrado(grado,ctx){
+  gradoFiltro=grado;
+  const pills=document.querySelectorAll(`#grado-pills-${ctx} .grade-pill`);
+  pills.forEach(p=>p.classList.toggle('active',p.textContent===grado));
+  if(ctx==='cob'){
+    const sel=document.getElementById('cob-alu');
+    Array.from(sel.options).forEach(o=>{
+      if(!o.value){o.style.display='';return;}
+      o.style.display=(grado==='Todos'||o.dataset.grado===grado)?'':'none';
+    });
+    sel.value='';document.getElementById('cob-wrap').style.display='none';
+  }
+  if(ctx==='mat'){
+    document.querySelectorAll('#mat-tbody tr').forEach(r=>{
+      r.style.display=(grado==='Todos'||r.dataset.grado===grado)?'':'none';
+    });
+    document.getElementById('mat-titulo').textContent=grado==='Todos'?'Alumnos — año escolar 2025–2026':grado+' — año escolar 2025–2026';
+  }
+  if(ctx==='eca'){
+    const sel=document.getElementById('eca-alu');
+    Array.from(sel.options).forEach(o=>{
+      if(!o.value){o.style.display='';return;}
+      o.style.display=(grado==='Todos'||o.dataset.grado===grado)?'':'none';
+    });
+    sel.value='';document.getElementById('eca-res').style.display='none';
+  }
+}
+function loadMeses(){
+  const idx=parseInt(document.getElementById('cob-alu').value);
+  const wrap=document.getElementById('cob-wrap');
+  if(isNaN(idx)){wrap.style.display='none';return;}
+  wrap.style.display='block';
+  cobSel={};
+  renderGrid(idx);
+  document.getElementById('cob-det-wrap').style.display='none';
+  document.getElementById('cob-res').classList.remove('vis');
+}
+function renderGrid(idx){
+  const a=ALUMNOS[idx];const grid=document.getElementById('cob-grid');
+  grid.innerHTML=ML.map((m,i)=>{
+    if(i<a.mi)return`<div class="mc na"><span class="mi">—</span><span class="ml">${m}</span><span class="mm">N/A</span></div>`;
+    if(i>MA)return`<div class="mc fut"><span class="mi">—</span><span class="ml">${m}</span><span class="mm">—</span></div>`;
+    if(a.p[i])return`<div class="mc pag"><span class="mi">✓</span><span class="ml">${m}</span><span class="mm">Pagado</span></div>`;
+    const cls=cobSel[i]!==undefined?'sel':'deu';
+    return`<div class="mc ${cls}" onclick="togMes(${i},${idx})"><span class="mi">${cobSel[i]!==undefined?'●':'✗'}</span><span class="ml">${m}</span><span class="mm">$${TAR[a.t]}</span></div>`;
+  }).join('');
+}
+function togMes(i,idx){
+  const a=ALUMNOS[idx];
+  if(cobSel[i]!==undefined){delete cobSel[i];}
+  else{cobSel[i]=TAR[a.t]*BCV;}
+  renderGrid(idx);
+  const keys=Object.keys(cobSel).map(Number);
+  const dw=document.getElementById('cob-det-wrap');
+  if(keys.length){dw.style.display='block';renderDetalle(idx,keys);}
+  else{dw.style.display='none';document.getElementById('cob-res').classList.remove('vis');}
+}
+function renderDetalle(idx,keys){
+  const a=ALUMNOS[idx];const df=document.getElementById('cob-det');df.innerHTML='';
+  keys.sort((x,y)=>x-y).forEach(i=>{
+    const tar=TAR[a.t]*BCV;
+    const row=document.createElement('div');
+    row.style.cssText='display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--bg2);border-radius:var(--r);margin-bottom:7px;flex-wrap:wrap';
+    row.innerHTML=`<div style="font-size:13px;font-weight:700;min-width:80px">${MF[i]}</div><div style="font-size:12px;color:var(--text2);flex:1">Total: Bs. ${fmt(tar)} ($${TAR[a.t]})</div><div style="display:flex;align-items:center;gap:7px"><label style="font-size:12px;color:var(--text2)">Bs. hoy:</label><input style="width:110px;font-size:13px;padding:6px 8px;border:1px solid var(--border2);border-radius:var(--r);background:var(--bg);text-align:right" type="number" value="${Math.round(cobSel[i]||tar)}" oninput="updCobMes(${i},this.value,${idx})"></div><div style="font-size:12px;font-weight:700;min-width:80px;text-align:right" id="ce-${i}"></div>`;
+    df.appendChild(row);updCobMes(i,cobSel[i]||tar,idx);
+  });
+  renderResCob(idx,keys);
+}
+function updCobMes(i,val,idx){
+  const a=ALUMNOS[idx];const v=parseFloat(val)||0;cobSel[i]=v;
+  const saldo=(TAR[a.t]*BCV)-a.a[i];const el=document.getElementById('ce-'+i);
+  if(el)el.innerHTML=v>=saldo?'<span class="badge bg">Completo</span>':v>0?'<span class="badge ba">Abono</span>':'<span class="badge br">Sin monto</span>';
+  renderResCob(idx,Object.keys(cobSel).map(Number).sort((x,y)=>x-y));
+}
+function renderResCob(idx,keys){
+  const a=ALUMNOS[idx];const res=document.getElementById('cob-res');
+  if(!keys.length){res.classList.remove('vis');return;}
+  let tot=0;const fil=document.getElementById('cob-res-filas');fil.innerHTML='';
+  // conceptos adicionales
+  const conc=document.getElementById('cob-concepto')?.value||'';
+  let extUSD=0;
+  if(conc==='ins')extUSD=150;else if(conc==='se')extUSD=30;else if(conc==='ce')extUSD=20;else if(conc==='ins+se+ce')extUSD=200;
+  if(extUSD>0)fil.innerHTML+=`<div style="display:flex;justify-content:space-between;font-size:13px;padding:3px 0"><span style="color:var(--pd)">${conc.toUpperCase()} USD $${extUSD}</span><span style="font-weight:700;color:#854F0B">Bs. ${fmt(extUSD*BCV)}</span></div>`;
+  tot+=extUSD*BCV;
+  keys.forEach(i=>{const monto=parseFloat(cobSel[i])||0;const saldo=(TAR[a.t]*BCV)-a.a[i];const comp=monto>=saldo;tot+=monto;
+    fil.innerHTML+=`<div style="display:flex;justify-content:space-between;font-size:13px;padding:3px 0"><span style="color:var(--pd)">${MF[i]}${comp?' ✓':' (abono)'}</span><span style="font-weight:700;color:${comp?'#3B6D11':'#854F0B'}">Bs. ${fmt(monto)}</span></div>`;
+  });
+  document.getElementById('cob-total').textContent='Bs. '+fmt(tot);
+  document.getElementById('cob-usd').textContent='USD '+(tot/BCV).toFixed(2)+' — tasa BCV Bs. '+BCV;
+  res.classList.add('vis');
+}
+function regCobro(){
+  const keys=Object.keys(cobSel).map(Number);
+  const conc=document.getElementById('cob-concepto')?.value||'';
+  let extUSD=0;
+  if(conc==='ins')extUSD=150;else if(conc==='se')extUSD=30;else if(conc==='ce')extUSD=20;else if(conc==='ins+se+ce')extUSD=200;
+  if(!keys.length&&!extUSD){alert('Selecciona al menos un mes o concepto.');return;}
+  let tot=extUSD*BCV;keys.forEach(i=>tot+=(parseFloat(cobSel[i])||0));
+  const banco=document.getElementById('cob-banco').value;
+  updBanco(banco,tot);
+  const ref=document.getElementById('cob-ref')?.value||'—';
+  // agregar a mis registros
+  const idx=parseInt(document.getElementById('cob-alu').value);
+  const a=ALUMNOS[idx];
+  misRegistros.unshift({id:Date.now(),f:new Date().toLocaleDateString('es-VE',{day:'2-digit',month:'2-digit'}),d:`Cobro ${a?a.n:'alumno'} — ${keys.map(i=>ML[i]).join(',')}${extUSD?' + '+conc.toUpperCase():''}`,p:'INGRESOS FACTURACIÓN',b:banco,m:tot,t:'ing'});
+  renderMisReg();
+  // Guardar en Google Sheets
+  const idxAlu = parseInt(document.getElementById('cob-alu').value);
+  const aluNom = !isNaN(idxAlu) ? ALUMNOS[idxAlu].n : 'N/A';
+  saveCobro(aluNom, Object.keys(cobSel).map(i=>ML[i]), tot, banco, document.getElementById('cob-fecha')?.value||'', BCV, ref).then(ok=>{
+    alert('✅ Cobro registrado\nBs. '+fmt(tot)+' en '+banco+'\nRef: '+ref+(ok?'\n✓ Guardado en base de datos':'\n⚠ Sin conexión — guardado localmente'));
+  });
+  cobSel={};
+  const aluSel=document.getElementById('cob-alu');if(aluSel)aluSel.value='';
+  document.getElementById('cob-wrap').style.display='none';
+  document.getElementById('cob-res').classList.remove('vis');
+}
+function cobrarDesdeMatricula(idx){
+  sp('sec','s-cob','ns-cob');
+  setTimeout(()=>{
+    const sel=document.getElementById('cob-alu');
+    if(sel){sel.value=idx;loadMeses();}
+  },100);
+}
+function genWA(){
+  const idx=parseInt(document.getElementById('cob-alu').value);if(isNaN(idx))return;
+  const a=ALUMNOS[idx];
+  const keys=Object.keys(cobSel).map(Number);
+  if(!keys.length){alert('Selecciona los meses primero.');return;}
+  let tot=0;keys.forEach(i=>tot+=(parseFloat(cobSel[i])||0));
+  const msg=`Estimado/a representante de ${a.n}:\n\nLe confirmamos el cobro registrado:\n• Meses: ${keys.map(i=>MF[i]).join(', ')}\n• Total: Bs. ${fmt(tot)} (USD ${(tot/BCV).toFixed(2)})\n• Tasa BCV: ${BCV}\n• Banco: ${document.getElementById('cob-banco').value}\n\nGracias por su pago.\nU.E. Ntra. Sra. de los Reyes`;
+  const url='https://wa.me/58'+a.tel.replace(/[^0-9]/g,'').slice(1)+'?text='+encodeURIComponent(msg);
+  window.open(url,'_blank');
+}
+function genWAECA(){
+  const idx=parseInt(document.getElementById('eca-alu').value);if(isNaN(idx))return;
+  const a=ALUMNOS[idx];
+  const nd=a.p.slice(0,MA).filter((v,i)=>i>=a.mi&&!v).length;
+  const msg=`Estimado/a representante de ${a.n}:\n\nSu estado de cuenta al día de hoy:\n• Meses pendientes: ${nd}\n• Deuda: USD $${nd*TAR[a.t]} (Bs. ${fmt(nd*TAR[a.t]*BCV)})\n\nPor favor regularizar a la brevedad.\nU.E. Ntra. Sra. de los Reyes`;
+  const url='https://wa.me/58'+a.tel.replace(/[^0-9]/g,'').slice(1)+'?text='+encodeURIComponent(msg);
+  window.open(url,'_blank');
+}
+
+// ═══════════════════════════════
+// EGRESOS
+// ═══════════════════════════════
+function acPartida(){
+  const q=document.getElementById('eg-partida-input').value.toLowerCase();
+  const drop=document.getElementById('eg-partida-drop');
+  if(q.length<2){drop.style.display='none';return;}
+  const m=PARTIDAS.filter(p=>p.n.toLowerCase().includes(q)).slice(0,10);
+  if(!m.length){drop.style.display='none';return;}
+  drop.innerHTML=m.map(p=>`<div class="ac-item" onclick="selPartida('${p.n}','${p.ret||''}','${p.cat}')">${p.n}<small>${p.cat}</small></div>`).join('');
+  drop.style.display='block';
+}
+function selPartida(nombre,ret,cat){
+  document.getElementById('eg-partida-input').value=nombre;
+  document.getElementById('eg-partida-drop').style.display='none';
+  // mostrar hint de retención
+  const hint=document.getElementById('eg-ret-hint');
+  if(ret){
+    hint.style.display='block';
+    hint.innerHTML=`<div class="nota-w" style="margin-bottom:0">Esta partida genera retención ISLR ${ret}% automáticamente.</div>`;
+    const retSel=document.getElementById('eg-ret-sel');
+    if(retSel)for(let i=0;i<retSel.options.length;i++){if(retSel.options[i].value===ret){retSel.selectedIndex=i;break;}}
+  } else {hint.style.display='none';}
+}
+function calcEgUSD(){
+  const m=parseFloat(document.getElementById('eg-monto').value)||0;
+  const el=document.getElementById('eg-usd');if(el)el.value=m?'USD '+(m/BCV).toFixed(2):'';
+}
+function addPartida(){
+  const n=document.getElementById('np-nombre').value.trim();
+  const cat=document.getElementById('np-cat').value;
+  const ret=document.getElementById('np-ret').value;
+  if(!n){alert('Escribe el nombre de la partida.');return;}
+  PARTIDAS.push({n,cat,ret});
+  alert('✅ Partida "'+n+'" agregada.');
+  closeModal('modal-partida');
+  document.getElementById('np-nombre').value='';
+}
+function regEgreso(){
+  const monto=parseFloat(document.getElementById('eg-monto').value)||0;if(!monto){alert('Ingresa el monto.');return;}
+  const banco=document.getElementById('eg-banco').value;
+  const partida=document.getElementById('eg-partida-input').value||'Egreso general';
+  updBanco(banco,-monto);
+  misRegistros.unshift({id:Date.now(),f:new Date().toLocaleDateString('es-VE',{day:'2-digit',month:'2-digit'}),d:partida,p:partida,b:banco,m:-monto,t:'eg'});
+  renderMisReg();
+  alert('✅ Egreso registrado\nBs. '+fmt(monto)+' debitado de '+banco);
+  document.getElementById('eg-monto').value='';document.getElementById('eg-usd').value='';document.getElementById('eg-partida-input').value='';
+}
+
+// ═══════════════════════════════
+// NÓMINA
+// ═══════════════════════════════
+function calcNom(){
+  const tasa=parseFloat(document.getElementById('nom-tasa')?.value)||BCV;
+  const suelTot=EMPLEADOS.reduce((s,e)=>s+e.sueldo,0);
+  const quinc=suelTot/2;
+  const el=document.getElementById('nom-vals');
+  if(el)el.innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+    <div><div style="font-size:11px;color:var(--text2)">Sueldos quincena</div><div style="font-weight:700">Bs. ${fmt(quinc)}</div></div>
+    <div><div style="font-size:11px;color:var(--text2)">En USD (ref.)</div><div style="font-weight:700">USD ${(quinc/tasa).toFixed(0)}</div></div>
+    <div><div style="font-size:11px;color:var(--text2)">Descuentos SSO+LPH</div><div style="font-weight:700;color:#A32D2D">−Bs. ${fmt(quinc*0.0335)}</div></div>
+  </div>`;
+}
+function renderNomNotif(){
+  const box=document.getElementById('nom-notif-box');
+  if(!box)return;
+  if(nomNotif){box.classList.add('vis');document.getElementById('nom-notif-txt').textContent=nomNotif;}
+  else{box.classList.remove('vis');}
+  calcNom();
+}
+function editEmp(idx){
+  const e=EMPLEADOS[idx];
+  const ns=prompt(`Nuevo sueldo para ${e.n} (actual: Bs. ${fmt(e.sueldo)}):`,e.sueldo);
+  if(!ns||isNaN(parseFloat(ns)))return;
+  const prev=e.sueldo;EMPLEADOS[idx].sueldo=parseFloat(ns);
+  nomNotif=`Dirección modificó sueldo de ${e.n}: Bs. ${fmt(prev)} → Bs. ${fmt(parseFloat(ns))} el ${new Date().toLocaleDateString('es-VE')}`;
+  // Actualizar tabla
+  const tbody=document.getElementById('emp-tbody');
+  if(tbody)tbody.innerHTML=EMPLEADOS.map((e,i)=>`<tr><td>${i+1}</td><td>${e.n}</td><td>${e.ci}</td><td>${e.cargo}</td><td>Bs. ${fmt(e.sueldo)}</td><td>${e.prestSaldo?'<span class="badge ba">Bs.'+fmt(e.prestSaldo)+'</span>':'—'}</td><td><button class="btn btn-sm" onclick="editEmp(${i})">Editar</button></td></tr>`).join('');
+  calcNom();
+  alert('✅ Sueldo actualizado. La próxima vez que abras "Nómina" aparecerá la notificación de cambio.');
+}
+function addEmpleado(){alert('Función de agregar empleado: próximamente en v8 con Google Sheets conectado.');}
+function regNomina(){
+  const tasa=parseFloat(document.getElementById('nom-tasa')?.value)||BCV;
+  const banco=document.getElementById('nom-banco').value;
+  const quinc=EMPLEADOS.reduce((s,e)=>s+e.sueldo,0)/2;
+  updBanco(banco,-quinc);
+  alert('✅ Quincena registrada\nBs. '+fmt(quinc)+' debitado de '+banco);
+}
+
+// ═══════════════════════════════
+// FISCAL SECRETARIA
+// ═══════════════════════════════
+function renderFiscSec(){
+  const c=document.getElementById('fisc-sec');if(!c)return;
+  c.innerHTML=OBLIG.map(ob=>{const{dc,ds,dcs}=fiscData(ob);
+    const btn=fiscPag[ob.id]
+      ?`<button class="btn btn-sm" style="color:#3B6D11;border-color:#97C459" onclick="desPag('${ob.id}')">✓ Pagado</button>`
+      :`<div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn btn-g btn-sm" onclick="marPag('${ob.id}')">Marcar pagado</button>${ob.link?`<button class="btn btn-sm btn-p" onclick="abrirSENIAT('${ob.link}')">🌐 Ir al portal</button>`:''}</div>`;
+    return`<div class="fi"><div class="fi-dot ${dc}"></div><div class="fi-info"><div class="fi-nom">${ob.n}</div><div class="fi-fec">Vence: ${ob.v} — ${ob.m} — ${ob.per}</div></div><div class="fi-dias ${dcs}" style="margin-right:10px">${ds}</div>${btn}</div>`;
+  }).join('');
+}
+function marPag(id){fiscPag[id]=true;renderFiscSec();renderFiscDir();}
+function desPag(id){delete fiscPag[id];renderFiscSec();renderFiscDir();}
+function abrirSENIAT(url){window.open(url,'_blank');}
+
+// ═══════════════════════════════
+// AYUDA SENIAT / TXT
+// ═══════════════════════════════
+function copiar(id){
+  const el=document.getElementById(id);if(!el)return;
+  navigator.clipboard.writeText(el.textContent).then(()=>{
+    const btn=el.parentElement.querySelector('.copy-btn-abs');
+    if(btn){const t=btn.textContent;btn.textContent='✓ Copiado';setTimeout(()=>btn.textContent=t,2000);}
+  }).catch(()=>alert('Selecciona y copia el texto manualmente.'));
+}
+
+// ═══════════════════════════════
+// INSCRIPCIÓN
+// ═══════════════════════════════
+function selTurno(t){
+  turno2=t;
+  document.getElementById('ins-b').className='turno-btn'+(t==='basico'?' sb':'');
+  document.getElementById('ins-t').className='turno-btn'+(t==='tarde'?' st':'');
+  document.getElementById('ins-usd-editor').style.display='block';
+  document.getElementById('ins-usd-val').value=TAR[t];
+  calcInsBCV();
+  calcIns();
+}
+function calcInsBCV(){
+  const v=parseFloat(document.getElementById('ins-usd-val').value)||0;
+  const el=document.getElementById('ins-bs-calc');
+  if(el)el.value='Bs. '+fmt(v*BCV);
+}
+function calcIns(){
+  if(!turno2){document.getElementById('ins-prev').classList.remove('vis');return;}
+  const tipo=document.getElementById('ins-tipo').value;
+  const mes=parseInt(document.getElementById('ins-mes').value);
+  const usdVal=parseFloat(document.getElementById('ins-usd-val')?.value)||TAR[turno2];
+  let filas=[],total=0;
+  if(tipo==='nuevo'){
+    filas.push({l:'Inscripción',v:'$150'});
+    filas.push({l:'Seguro estudiantil',v:'$30'});
+    filas.push({l:'Consejo educativo',v:'$20'});
+    total+=200;
+  }
+  filas.push({l:'1ra mensualidad '+MF[mes],v:'$'+usdVal});total+=usdVal;
+  document.getElementById('ins-filas').innerHTML=filas.map(f=>`<div style="display:flex;justify-content:space-between;font-size:14px;padding:4px 0"><span style="color:var(--purple)">${f.l}</span><span style="font-weight:700;color:var(--pd)">${f.v}</span></div>`).join('');
+  document.getElementById('ins-total').textContent='$'+total+' USD';
+  document.getElementById('ins-bs').textContent='Bs. '+fmt(total*BCV)+' — tasa BCV '+BCV;
+  document.getElementById('ins-prev').classList.add('vis');
+}
+
+// ═══════════════════════════════
+// ESTADO DE CUENTA
+// ═══════════════════════════════
+function genECA(){
+  const idx=parseInt(document.getElementById('eca-alu').value);const res=document.getElementById('eca-res');
+  if(isNaN(idx)){res.style.display='none';return;}
+  const a=ALUMNOS[idx];res.style.display='block';
+  document.getElementById('eca-nom').textContent=a.n+' — '+a.g+' — Turno '+(a.t==='basico'?'básico $150':'tarde $190');
+  document.getElementById('eca-meta').textContent='Representante: '+a.r+' — '+a.tel;
+  const grid=document.getElementById('eca-grid');
+  grid.innerHTML=ML.map((m,i)=>{
+    if(i<a.mi)return`<div class="mc na"><span class="mi">—</span><span class="ml">${m}</span><span class="mm">N/A</span></div>`;
+    if(i>MA)return`<div class="mc fut"><span class="mi">—</span><span class="ml">${m}</span><span class="mm">—</span></div>`;
+    if(a.p[i])return`<div class="mc pag"><span class="mi">✓</span><span class="ml">${m}</span><span class="mm">$${TAR[a.t]}</span></div>`;
+    return`<div class="mc deu"><span class="mi">✗</span><span class="ml">${m}</span><span class="mm">$${TAR[a.t]}</span></div>`;
+  }).join('');
+  const nd=ML.filter((_,i)=>i>=a.mi&&i<=MA&&!a.p[i]).length;const dt=nd*TAR[a.t]*BCV;
+  document.getElementById('eca-sum').innerHTML=nd>0
+    ?`<div style="background:var(--rl);border:1px solid #F09595;border-radius:var(--r);padding:12px 14px;display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:14px;font-weight:700;color:#A32D2D">${nd} mes${nd>1?'es':''} pendiente${nd>1?'s':''}</div><div style="font-size:13px;color:#A32D2D">USD $${nd*TAR[a.t]}</div></div><div style="font-size:18px;font-weight:700;color:#A32D2D">Bs. ${fmt(dt)}</div></div>`
+    :`<div style="background:#EAF3DE;border:1px solid #97C459;border-radius:var(--r);padding:12px 14px;font-size:14px;font-weight:700;color:#3B6D11;text-align:center">✅ Al día con todos los pagos</div>`;
+}
+
+// ═══════════════════════════════
+// MIS REGISTROS (editables)
+// ═══════════════════════════════
+function renderMisReg(){
+  const tb=document.getElementById('mis-tbody');if(!tb)return;
+  tb.innerHTML=misRegistros.map((r,i)=>`<tr><td>${r.f}</td><td title="${r.d}">${r.d}</td><td style="font-size:11px">${r.p}</td><td>${r.b}</td><td style="color:${r.m>0?'#3B6D11':'#A32D2D'};font-weight:600">${r.m>0?'+':''}${fmt(r.m)}</td><td><span class="badge ${r.t==='ing'?'bg':'br'}">${r.t==='ing'?'Ingreso':'Egreso'}</span></td><td><button class="btn btn-sm" onclick="abrirEdit(${i})">✏️</button></td></tr>`).join('');
+}
+function abrirEdit(i){
+  editIdx=i;const r=misRegistros[i];
+  document.getElementById('edit-desc').value=r.d;
+  document.getElementById('edit-monto').value=Math.abs(r.m);
+  document.getElementById('edit-banco').value=r.b;
+  document.getElementById('edit-cat').value=r.p;
+  document.getElementById('edit-fecha').value=today();
+  document.getElementById('edit-motivo').value='';
+  openModal('modal-edit');
+}
+function saveEdit(){
+  if(editIdx===null)return;
+  const motivo=document.getElementById('edit-motivo').value.trim();
+  if(!motivo){alert('Escribe el motivo de la corrección.');return;}
+  const r=misRegistros[editIdx];
+  const monto=parseFloat(document.getElementById('edit-monto').value)||Math.abs(r.m);
+  r.d=document.getElementById('edit-desc').value;
+  r.m=r.t==='ing'?monto:-monto;
+  r.b=document.getElementById('edit-banco').value;
+  r.p=document.getElementById('edit-cat').value;
+  closeModal('modal-edit');
+  renderMisReg();
+  alert('✅ Registro corregido.\nMotivo: '+motivo);
+}
+
+// ═══════════════════════════════
+// CIERRE
+// ═══════════════════════════════
+function renderCierreList(){
+  const lista=[
+    {n:'Cobros del mes registrados',ok:misRegistros.filter(r=>r.t==='ing').length>0},
+    {n:'Egresos del mes registrados',ok:misRegistros.filter(r=>r.t==='eg').length>0},
+    {n:'Retenciones IVA 1ra quincena generadas',ok:fiscPag['ret-iva-may1']||false},
+    {n:'Retención ISLR abril declarada',ok:fiscPag['ret-islr-abr']||false},
+    {n:'IVSS patronal pagado',ok:fiscPag['ivss-may']||false},
+    {n:'BANAVIH / FAOV pagado',ok:fiscPag['banavih-may']||false},
+    {n:'Nómina quincenas completas',ok:false},
+    {n:'Estado de cuenta bancario subido',ok:false},
+  ];
+  const c=document.getElementById('cierre-lista');if(!c)return;
+  const comp=lista.filter(x=>x.ok).length;
+  c.innerHTML=`<div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+    <div style="flex:1;height:8px;background:var(--bg3);border-radius:4px;overflow:hidden"><div style="height:100%;width:${Math.round(comp/lista.length*100)}%;background:var(--green);border-radius:4px;transition:.3s"></div></div>
+    <div style="font-size:13px;font-weight:700;color:var(--gd)">${comp}/${lista.length}</div>
+  </div>`+lista.map(x=>`<div style="display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--border)"><div style="width:22px;height:22px;border-radius:50%;background:${x.ok?'#EAF3DE':'var(--bg3)'};border:2px solid ${x.ok?'#97C459':'var(--border2)'};display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0">${x.ok?'✓':''}</div><div style="flex:1;font-size:13px;color:${x.ok?'var(--text)':'var(--text2)'}">${x.n}</div><span class="badge ${x.ok?'bg':'bgr'}">${x.ok?'Listo':'Pendiente'}</span></div>`).join('');
+}
+
+// ═══════════════════════════════
+// COMPROBANTES ISLR
+// ═══════════════════════════════
+function addIslrOp(){islrOps.push({f:'',fac:'',ctrl:'',m:''});renderIslrOps();}
+function removeIslrOp(i){islrOps.splice(i,1);renderIslrOps();}
+function renderIslrOps(){
+  const c=document.getElementById('islr-ops-wrap');if(!c)return;
+  c.innerHTML=islrOps.map((op,i)=>`<div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:10px;margin-bottom:8px;position:relative"><button onclick="removeIslrOp(${i})" style="position:absolute;top:8px;right:8px;background:none;border:none;color:#A32D2D;cursor:pointer;font-size:16px;line-height:1">×</button><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px"><div class="form-group"><label>Fecha emisión</label><input type="date" value="${op.f}" onchange="islrOps[${i}].f=this.value"></div><div class="form-group"><label>N. Factura</label><input type="text" value="${op.fac}" placeholder="00366" onchange="islrOps[${i}].fac=this.value"></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div class="form-group"><label>N. Control</label><input type="text" value="${op.ctrl}" placeholder="00-00000366" onchange="islrOps[${i}].ctrl=this.value"></div><div class="form-group"><label>Monto total Bs.</label><input type="number" value="${op.m}" placeholder="0.00" oninput="islrOps[${i}].m=this.value"></div></div></div>`).join('');
+}
+function acISLR(){
+  const q=document.getElementById('islr-prov').value.toLowerCase();const drop=document.getElementById('islr-drop');
+  if(q.length<2){drop.style.display='none';return;}
+  const m=PROVS.filter(p=>p.n.toLowerCase().includes(q)||p.r.toLowerCase().includes(q));
+  if(!m.length){drop.style.display='none';return;}
+  drop.innerHTML=m.map(p=>`<div class="ac-item" onclick="selProvISLR('${p.n}','${p.r}','${p.t}')">${p.n}<small>${p.r}</small></div>`).join('');drop.style.display='block';
+}
+function selProvISLR(n,r,t){
+  const pi=document.getElementById('islr-prov'),ri=document.getElementById('islr-rif');
+  if(pi)pi.value=n;if(ri)ri.value=r;
+  const sel=document.getElementById('islr-pct');if(sel)for(let i=0;i<sel.options.length;i++){if(sel.options[i].value===t){sel.selectedIndex=i;break;}}
+  const drop=document.getElementById('islr-drop');if(drop)drop.style.display='none';
+}
+function renderISLR(){
+  const num=document.getElementById('islr-num').value||'___________';
+  const fecha=document.getElementById('islr-fecha').value;
+  const bNom=document.getElementById('islr-prov').value||'___________';
+  const bRif=document.getElementById('islr-rif').value||'___________';
+  const bDir=document.getElementById('islr-dir').value||'___________';
+  const pctSel=document.getElementById('islr-pct').value;
+  const pct=pctSel==='other'?(parseFloat(document.getElementById('islr-pct-other').value)||5):parseFloat(pctSel);
+  let totM=0,totBase=0,totRet=0;
+  const rows=islrOps.map(op=>{const monto=parseFloat(op.m)||0;const base=monto/1.16;const ret=base*pct/100;totM+=monto;totBase+=base;totRet+=ret;return`<tr><td>${fmtD(op.f)}</td><td>${op.fac||''}</td><td>${op.ctrl||''}</td><td>${fmtM(monto)}</td><td>${fmtM(base)}</td><td>${pct}%</td><td><strong>${fmtM(ret)}</strong></td></tr>`;}).join('');
+  const prev=document.getElementById('islr-prev'),doc=document.getElementById('islr-doc');prev.style.display='block';
+  doc.innerHTML=`<div class="comp-wrap"><div style="display:flex;align-items:center;gap:16px;border-bottom:2px solid #222;padding-bottom:12px;margin-bottom:12px"><img src="${LOGO_SRC}" style="width:64px;height:64px;object-fit:contain"><div style="flex:1"><div class="islr-header" style="border:none;padding:0;margin:0"><div class="islr-title-block"><div class="islr-title">COMPROBANTE DE RETENCIÓN DE IMPUESTO SOBRE LA RENTA</div><div class="islr-decree">DECRETO 1.808 DE FECHA 23 DE ABRIL 1997</div><div class="islr-decree">GACETA OFICIAL N. 36.203 DE FECHA 12 DE MAYO DE 1997</div></div><div class="islr-meta"><div><strong>FECHA:</strong> ${fmtD(fecha)}</div><div style="margin-top:3px"><strong>N. COMPROBANTE:</strong> ${num}</div></div></div></div></div><div class="islr-parties"><div class="islr-party"><div class="islr-party-title">Datos del Agente de Retención</div><div class="islr-party-row">NOMBRE: <span>${COLEGIO.nombre}</span></div><div class="islr-party-row">DIRECCIÓN: <span>${COLEGIO.dir}</span></div><div class="islr-party-row">RIF: <span>${COLEGIO.rif_islr}</span></div></div><div class="islr-party"><div class="islr-party-title">Datos del Beneficiario</div><div class="islr-party-row">NOMBRE: <span>${bNom}</span></div><div class="islr-party-row">DIRECCIÓN: <span>${bDir}</span></div><div class="islr-party-row">RIF: <span>${bRif}</span></div></div></div><div style="font-size:9px;font-weight:bold;text-transform:uppercase;margin-bottom:6px;color:#333">Datos del Impuesto Retenido</div><table class="comp-table"><thead><tr><th>Fecha Emisión</th><th>N. Factura</th><th>N. Control</th><th>Monto Total Bs.</th><th>Base Retención</th><th>% Retención</th><th>Valor Retenido</th></tr></thead><tbody>${rows}</tbody><tfoot><tr><td colspan="3" style="text-align:right">TOTAL:</td><td>${fmtM(totM)}</td><td>${fmtM(totBase)}</td><td>${pct}%</td><td><strong>${fmtM(totRet)}</strong></td></tr></tfoot></table><div style="text-align:right;font-size:11px;font-weight:bold;border-top:1px solid #888;padding-top:6px;margin-top:4px">TOTAL RETENIDO: Bs. ${fmtM(totRet)}</div><div class="islr-footer"><div class="islr-firma">${COLEGIO.nombre}<br>Agente de Retención</div><div class="islr-firma">${bNom}<br>Sello y Firma del Beneficiario</div></div></div>`;
+  prev.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ═══════════════════════════════
+// COMPROBANTES IVA
+// ═══════════════════════════════
+function addIvaOp(){ivaOps.push({f:'',fac:'',ctrl:'',m:'',base:'',ali:'16'});renderIvaOps();}
+function removeIvaOp(i){ivaOps.splice(i,1);renderIvaOps();}
+function renderIvaOps(){
+  const c=document.getElementById('iva-ops-wrap');if(!c)return;
+  c.innerHTML=ivaOps.map((op,i)=>`<div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:10px;margin-bottom:8px;position:relative"><button onclick="removeIvaOp(${i})" style="position:absolute;top:8px;right:8px;background:none;border:none;color:#A32D2D;cursor:pointer;font-size:16px;line-height:1">×</button><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px"><div class="form-group"><label>Fecha Factura</label><input type="date" value="${op.f}" onchange="ivaOps[${i}].f=this.value"></div><div class="form-group"><label>N. Factura</label><input type="text" value="${op.fac}" placeholder="000001" onchange="ivaOps[${i}].fac=this.value"></div><div class="form-group"><label>N. Control</label><input type="text" value="${op.ctrl}" placeholder="00-000001" onchange="ivaOps[${i}].ctrl=this.value"></div></div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px"><div class="form-group"><label>Monto Total Bs.</label><input type="number" value="${op.m}" placeholder="0.00" oninput="ivaOps[${i}].m=this.value;calcIvaBase(${i})"></div><div class="form-group"><label>Base Imponible</label><input type="number" value="${op.base}" placeholder="0.00" oninput="ivaOps[${i}].base=this.value" id="iva-base-${i}"></div><div class="form-group"><label>Alícuota</label><select onchange="ivaOps[${i}].ali=this.value"><option value="16" ${op.ali==='16'?'selected':''}>16%</option><option value="8" ${op.ali==='8'?'selected':''}>8%</option></select></div></div></div>`).join('');
+}
+function calcIvaBase(i){
+  const monto=parseFloat(ivaOps[i].m)||0;const pct=parseFloat(ivaOps[i].ali)||16;const base=monto/(1+pct/100);
+  ivaOps[i].base=base.toFixed(2);const el=document.getElementById('iva-base-'+i);if(el)el.value=ivaOps[i].base;
+}
+function acIVA(){
+  const q=document.getElementById('iva-prov').value.toLowerCase();const drop=document.getElementById('iva-drop');
+  if(q.length<2){drop.style.display='none';return;}
+  const m=PROVS.filter(p=>p.n.toLowerCase().includes(q)||p.r.toLowerCase().includes(q));
+  if(!m.length){drop.style.display='none';return;}
+  drop.innerHTML=m.map(p=>`<div class="ac-item" onclick="selProvIVA('${p.n}','${p.r}')">${p.n}<small>${p.r}</small></div>`).join('');drop.style.display='block';
+}
+function selProvIVA(n,r){
+  const pi=document.getElementById('iva-prov'),ri=document.getElementById('iva-rif');
+  if(pi)pi.value=n;if(ri)ri.value=r;const drop=document.getElementById('iva-drop');if(drop)drop.style.display='none';
+}
+function renderIVA(){
+  const num=document.getElementById('iva-num').value||'___________';
+  const fecha=document.getElementById('iva-fecha').value;
+  const pNom=document.getElementById('iva-prov').value||'___________';
+  const pRif=document.getElementById('iva-rif').value||'___________';
+  let totBase=0,totIVA=0,totRet=0;
+  const rows=ivaOps.map((op,i)=>{const base=parseFloat(op.base)||0;const pct=parseFloat(op.ali)||16;const iva=base*pct/100;const ret=iva*0.75;totBase+=base;totIVA+=iva;totRet+=ret;return`<tr><td>${i+1}</td><td>${fmtD(op.f)}</td><td>${op.fac||''}</td><td>${op.ctrl||''}</td><td>—</td><td>—</td><td>${fmtM(base)}</td><td>${pct}%</td><td>${fmtM(iva)}</td><td><strong>${fmtM(ret)}</strong></td></tr>`;}).join('');
+  const prev=document.getElementById('iva-prev'),doc=document.getElementById('iva-doc');prev.style.display='block';
+  doc.innerHTML=`<div class="comp-wrap"><div style="display:flex;align-items:center;gap:14px;margin-bottom:10px"><img src="${LOGO_SRC}" style="width:60px;height:60px;object-fit:contain"><div style="flex:1"><div class="comp-title">COMPROBANTE DE RETENCIÓN DEL IMPUESTO AL VALOR AGREGADO</div></div></div><div class="comp-sub">(Ley IVA - Art. 11: Serán responsables del pago del impuesto en calidad de agente de retención, los compradores o adquirientes de determinados bienes muebles y los receptores de ciertos servicios, a quienes la Administración Tributaria designe como tal)</div><div class="comp-num">N. Comprobante: <strong>${num}</strong> &nbsp; Fecha: <strong>${fmtD(fecha)}</strong></div><div class="comp-row"><div class="comp-field" style="flex:2"><div class="comp-field-lbl">Nombre o Razón Social del Agente de Retención</div><div class="comp-field-val">${COLEGIO.nombre}</div></div><div class="comp-field"><div class="comp-field-lbl">RIF del Agente de Retención</div><div class="comp-field-val">${COLEGIO.rif_iva}</div></div></div><div class="comp-row"><div class="comp-field"><div class="comp-field-lbl">Dirección Fiscal del Agente de Retención</div><div class="comp-field-val sm">${COLEGIO.dir}</div></div></div><div class="comp-row"><div class="comp-field" style="flex:2"><div class="comp-field-lbl">Nombre o Razón Social del Sujeto Retenido</div><div class="comp-field-val">${pNom}</div></div><div class="comp-field"><div class="comp-field-lbl">RIF del Sujeto Retenido</div><div class="comp-field-val">${pRif}</div></div></div><table class="comp-table"><thead><tr><th>Op.</th><th>Fecha Factura</th><th>N. Factura</th><th>N. Control</th><th>N. Nota Débito</th><th>N. Nota Crédito</th><th>Base Imponible</th><th>Alícuota</th><th>Impuesto IVA</th><th>IVA Retenido 75%</th></tr></thead><tbody>${rows}</tbody><tfoot><tr><td colspan="6" style="text-align:right">TOTALES:</td><td>${fmtM(totBase)}</td><td></td><td>${fmtM(totIVA)}</td><td><strong>${fmtM(totRet)}</strong></td></tr></tfoot></table><div style="text-align:right;font-size:11px;font-weight:bold;margin-top:4px;border-top:1px solid #888;padding-top:4px">TOTAL IVA RETENIDO: Bs. ${fmtM(totRet)}</div><div class="comp-firma"><div class="comp-firma-box">Firma y Sello Agente de Retención</div></div></div>`;
+  prev.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ═══════════════════════════════
+// ESPECIALISTAS
+// ═══════════════════════════════
+function calcEsp(){
+  const tar=parseFloat(document.getElementById('esp-sel').value)||0;const h=parseFloat(document.getElementById('esp-h').value)||0;
+  const prev=document.getElementById('esp-prev');if(!tar||!h){prev.style.display='none';return;}
+  const bruto=h*tar*BCV;const ret=bruto*0.05;const neto=bruto-ret;
+  document.getElementById('esp-vals').innerHTML=`<div><div style="font-size:11px;color:var(--pd);font-weight:600">BRUTO</div><div style="font-weight:700;font-size:14px">Bs. ${fmt(bruto)}</div><div style="font-size:11px;color:var(--text2)">USD ${(bruto/BCV).toFixed(2)}</div></div><div><div style="font-size:11px;color:var(--pd);font-weight:600">RETENCIÓN 5%</div><div style="font-weight:700;font-size:14px;color:#A32D2D">Bs. ${fmt(ret)}</div></div><div><div style="font-size:11px;color:var(--pd);font-weight:600">NETO A PAGAR</div><div style="font-weight:700;font-size:14px;color:#3B6D11">Bs. ${fmt(neto)}</div></div>`;
+  prev.style.display='block';
+}
+
+
+function updTasaPorFecha(fecha){
+  // Avisa que la tasa puede ser diferente si el día cambió
+  const hoy = today();
+  const lbl = document.getElementById('cob-tasa-lbl');
+  const inp = document.getElementById('cob-tasa-input');
+  if(fecha && fecha !== hoy){
+    const nota = document.getElementById('cob-tasa-nota');
+    if(nota) nota.innerHTML = '<strong style="color:#A32D2D">⚠ Cobro de fecha anterior — verifica la tasa BCV del '+fmtD(fecha)+' y corrígela manualmente.</strong>';
+    if(inp) inp.style.background = '#FAEEDA';
+  } else {
+    const nota = document.getElementById('cob-tasa-nota');
+    if(nota) nota.innerHTML = 'Tasa del día actual: Bs. <strong id="cob-tasa-lbl">'+BCV+'</strong> — Si el cobro fue en otro día, cambia la fecha y ajusta la tasa manualmente.';
+    if(inp){inp.style.background='';inp.value=BCV;}
+  }
+}
+function updTasaCobro(val){
+  const v = parseFloat(val)||BCV;
+  // Recalcular montos en el resumen con nueva tasa
+  const idx = parseInt(document.getElementById('cob-alu')?.value);
+  if(!isNaN(idx)) renderResCob(idx, Object.keys(cobSel).map(Number).sort((x,y)=>x-y));
+}
+function renderDirNom(){
+  const tb = document.getElementById('dir-nom-tbody');
+  if(!tb) return;
+  tb.innerHTML = EMPLEADOS.map((e,i)=>`<tr><td>${i+1}</td><td>${e.n}</td><td>${e.ci}</td><td>${e.cargo}</td><td>Bs. ${fmt(e.sueldo)}</td><td>${e.prestSaldo?'<span class="badge ba">Bs. '+fmt(e.prestSaldo)+'</span>':'—'}</td></tr>`).join('');
+}
+
+
+// ═══════════════════════════════
+// GOOGLE SHEETS — BASE DE DATOS
+// ═══════════════════════════════
+let dbStatus = 'connecting'; // connecting | ok | error
+
+async function dbRead(tab){
+  try{
+    const url = SHEETS_URL + '?action=read&tab=' + encodeURIComponent(tab);
+    const res = await fetch(url);
+    const data = await res.json();
+    if(data.ok) return data.data;
+    console.error('dbRead error:', data.error);
+    return null;
+  }catch(e){console.error('dbRead fetch error:',e);return null;}
+}
+
+async function dbAppend(tab, row){
+  try{
+    const res = await fetch(SHEETS_URL, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({action:'append', tab, row})
+    });
+    const data = await res.json();
+    return data.ok;
+  }catch(e){console.error('dbAppend error:',e);return false;}
+}
+
+async function dbInitTabs(){
+  try{
+    const res = await fetch(SHEETS_URL, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({action:'init_tabs'})
+    });
+    const data = await res.json();
+    console.log('Init tabs:', data);
+    return data.ok;
+  }catch(e){console.error('dbInitTabs error:',e);return false;}
+}
+
+async function testDB(){
+  const el = document.getElementById('db-status');
+  if(el) el.textContent = 'Conectando...';
+  try{
+    const url = SHEETS_URL + '?action=read&tab=Config';
+    const res = await fetch(url);
+    const data = await res.json();
+    dbStatus = 'ok';
+    if(el){el.textContent='✓ Base de datos conectada';el.style.color='#3B6D11';}
+    console.log('DB conectada OK');
+    return true;
+  }catch(e){
+    dbStatus = 'error';
+    if(el){el.textContent='⚠ Sin conexión a base de datos';el.style.color='#A32D2D';}
+    console.error('DB error:',e);
+    return false;
+  }
+}
+
+// Guardar cobro en Sheets
+async function saveCobro(alumno, meses, total, banco, fecha, tasa, ref){
+  const row = [
+    fecha,
+    alumno,
+    meses.join(','),
+    total,
+    banco,
+    tasa,
+    ref,
+    new Date().toISOString()
+  ];
+  const ok = await dbAppend('Cobros', row);
+  if(!ok) console.warn('Cobro no guardado en Sheets');
+  return ok;
+}
+
+// Guardar egreso en Sheets
+async function saveEgreso(fecha, partida, proveedor, monto, banco, factura){
+  const row = [fecha, partida, proveedor, monto, banco, factura, new Date().toISOString()];
+  const ok = await dbAppend('Egresos', row);
+  if(!ok) console.warn('Egreso no guardado en Sheets');
+  return ok;
+}
+
+// ═══════════════════════════════
+// INIT
+// ═══════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  testDB();
+  // Init Google Sheets tabs on first run
+  setTimeout(()=>dbInitTabs(),2000);
+  const t=today();
+  const ci=document.getElementById('cob-tasa-input');if(ci)ci.value=BCV;
+  ['cob-fecha','eg-fecha','nom-fecha','esp-fecha','islr-fecha','iva-fecha'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=t;});
+});
+</script>
+</body>
+</html>
