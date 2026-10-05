@@ -1189,9 +1189,9 @@ Aporte mensual: 3% salario (1% empleado + 2% patronal)</div>
   <p class="page-title">Inscribir alumno</p><p class="page-sub">Nuevo ingreso o reinscripción</p>
   <div class="card">
     <div class="form-row">
-      <div class="form-group"><label>Nombre del alumno</label><input type="text" placeholder="Nombre completo"></div>
+      <div class="form-group"><label>Nombre del alumno</label><input type="text" id="ins-nombre" placeholder="Nombre completo"></div>
       <div class="form-group"><label>Grado</label>
-        <select>
+        <select id="ins-grado">
           <option>Preescolar A</option><option>Preescolar B</option>
           <option>1er Grado</option><option>2do Grado</option><option>3er Grado</option>
           <option>4to Grado</option><option>5to Grado</option><option>6to Grado</option>
@@ -1207,8 +1207,8 @@ Aporte mensual: 3% salario (1% empleado + 2% patronal)</div>
       </div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label>Representante</label><input type="text" placeholder="Nombre completo"></div>
-      <div class="form-group"><label>Teléfono</label><input type="text" placeholder="04XX-XXXXXXX"></div>
+      <div class="form-group"><label>Representante</label><input type="text" id="ins-rep" placeholder="Nombre completo"></div>
+      <div class="form-group"><label>Teléfono</label><input type="text" id="ins-tel" placeholder="04XX-XXXXXXX"></div>
     </div>
     <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:8px">Selecciona el turno:</div>
     <div class="turno-sel">
@@ -1231,7 +1231,7 @@ Aporte mensual: 3% salario (1% empleado + 2% patronal)</div>
       <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:700;padding:8px 0 0;border-top:1px solid #AFA9EC;margin-top:6px;color:var(--pd)"><span>Total hoy</span><span id="ins-total">--</span></div>
       <div style="font-size:12px;color:var(--purple);margin-top:3px" id="ins-bs"></div>
     </div>
-    <button class="btn btn-g" style="margin-top:6px">Inscribir alumno</button>
+    <button class="btn btn-g" style="margin-top:6px" onclick="regInscripcion()">Inscribir alumno</button>
   </div>
 </div>
 
@@ -1576,11 +1576,17 @@ function regEgreso(){
   const monto=parseFloat(document.getElementById('eg-monto').value)||0;if(!monto){alert('Ingresa el monto.');return;}
   const banco=document.getElementById('eg-banco').value;
   const partida=document.getElementById('eg-partida-input').value||'Egreso general';
+  const proveedor=document.getElementById('eg-prov')?.value||'—';
+  const factura=document.getElementById('eg-fac')?.value||'—';
+  const fecha=document.getElementById('eg-fecha')?.value||'';
   updBanco(banco,-monto);
   misRegistros.unshift({id:Date.now(),f:new Date().toLocaleDateString('es-VE',{day:'2-digit',month:'2-digit'}),d:partida,p:partida,b:banco,m:-monto,t:'eg'});
   renderMisReg();
-  alert('✅ Egreso registrado\nBs. '+fmt(monto)+' debitado de '+banco);
-  document.getElementById('eg-monto').value='';document.getElementById('eg-usd').value='';document.getElementById('eg-partida-input').value='';
+  // Guardar en Google Sheets
+  saveEgreso(fecha, partida, proveedor, monto, banco, factura).then(ok=>{
+    alert('✅ Egreso registrado\nBs. '+fmt(monto)+' debitado de '+banco+(ok?'\n✓ Guardado en base de datos':'\n⚠ Sin conexión — guardado localmente'));
+  });
+  document.getElementById('eg-monto').value='';document.getElementById('eg-usd').value='';document.getElementById('eg-partida-input').value='';document.getElementById('eg-prov').value='';document.getElementById('eg-fac').value='';
 }
 
 // ═══════════════════════════════
@@ -1686,6 +1692,28 @@ function calcIns(){
   document.getElementById('ins-total').textContent='$'+total+' USD';
   document.getElementById('ins-bs').textContent='Bs. '+fmt(total*BCV)+' — tasa BCV '+BCV;
   document.getElementById('ins-prev').classList.add('vis');
+}
+function regInscripcion(){
+  const nombre=document.getElementById('ins-nombre').value.trim();
+  const grado=document.getElementById('ins-grado').value;
+  const representante=document.getElementById('ins-rep').value.trim();
+  const telefono=document.getElementById('ins-tel').value.trim();
+  const tipo=document.getElementById('ins-tipo').value;
+  const mes=parseInt(document.getElementById('ins-mes').value);
+  if(!nombre||!representante||!telefono){alert('Completa nombre del alumno, representante y teléfono.');return;}
+  if(!turno2){alert('Selecciona el turno.');return;}
+  // Guardar en Google Sheets
+  saveAlumno(nombre, grado, tipo, turno2, representante, telefono, MF[mes]).then(ok=>{
+    alert('✅ Alumno inscrito\n'+nombre+' — '+grado+(ok?'\n✓ Guardado en base de datos':'\n⚠ Sin conexión — no se pudo guardar, verifica la conexión e intenta de nuevo.'));
+  });
+  document.getElementById('ins-nombre').value='';
+  document.getElementById('ins-rep').value='';
+  document.getElementById('ins-tel').value='';
+  turno2=null;
+  document.getElementById('ins-b').className='turno-btn';
+  document.getElementById('ins-t').className='turno-btn';
+  document.getElementById('ins-usd-editor').style.display='none';
+  document.getElementById('ins-prev').classList.remove('vis');
 }
 
 // ═══════════════════════════════
@@ -1966,6 +1994,14 @@ async function saveEgreso(fecha, partida, proveedor, monto, banco, factura){
   const row = [fecha, partida, proveedor, monto, banco, factura, new Date().toISOString()];
   const ok = await dbAppend('Egresos', row);
   if(!ok) console.warn('Egreso no guardado en Sheets');
+  return ok;
+}
+
+// Guardar alumno en Sheets
+async function saveAlumno(nombre, grado, tipo, turno, representante, telefono, mesIngreso){
+  const row = [nombre, grado, tipo, turno, representante, telefono, mesIngreso, new Date().toISOString()];
+  const ok = await dbAppend('Alumnos', row);
+  if(!ok) console.warn('Alumno no guardado en Sheets');
   return ok;
 }
 
